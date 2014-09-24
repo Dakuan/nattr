@@ -3,27 +3,10 @@ var express = require('express'),
     http = require('http').Server(app),
     cons = require('consolidate'),
     io = require('socket.io')(http),
-    React = require('react'),
-    Fluxxor = require('fluxxor'),
-    UpdateStore = require('../stores/update-store'),
-    componentLoader = require('./util/component-loader'),
     path = require('path');
 
 // Routes
-app.get('/', function (req, res) {
-
-    // Fire up flux
-    var flux = new Fluxxor.Flux({
-        updateStore: new UpdateStore()
-    }, require('../actions/actions'));
-
-    var component = componentLoader('app'),
-        html = React.renderComponentToString(component({
-            flux: flux
-        }));
-
-    res.render('index');
-});
+app.use('/', require('./routes/root'));
 
 // Assets
 app.use('/public/images', express.static(path.join(__dirname, '../public/images')));
