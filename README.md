@@ -1,3 +1,10 @@
+
+[![Build Status](https://travis-ci.org/Dakuan/nattr.svg?branch=master)](https://travis-ci.org/Dakuan/nattr)
+<br/>
+<img src="http://i.giphy.com/7jrdqPHSJ603C.gif" height="100px"/>
+
+
+
 Nattr
 ======
 
