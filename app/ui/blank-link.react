@@ -1,0 +1,17 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var BlankLink = React.createClass({
+
+	render: function() {
+		return (
+			<a href={this.props.href} target="_blank">{this.props.text}</a>
+		);
+	}
+
+});
+
+module.exports = BlankLink;

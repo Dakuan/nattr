@@ -2,7 +2,10 @@
  * @jsx React.DOM
  */
 
-var React = require('react');
+var React = require('react'),
+	parser = require('../util/content-parser'),
+	twitterUrls = require('../util/urls/twitter-urls'),
+	BlankLink = require('./blank-link');
 
 var s = {
 	width: '40px',
@@ -25,7 +28,19 @@ var UpdateList = React.createClass({
 										<div className="media-heading">										
 											<h4>{update.name}</h4>											
 										</div>	
-										{update.text}
+										{update.text.split(' ').map(function(word, index, array) {
+											var text = (index === (array.length)) ? word : word + ' ';
+ 											if(parser.url.isUrl(word)) { 
+												return (<BlankLink href={word} text={text} />);
+											}
+											if(parser.twitter.isHash(word)) {
+												return (<BlankLink href={twitterUrls.hashTagUrl(word)} text={text} />);
+											}
+											if(parser.twitter.isHandle(word)) {
+												return (<BlankLink href={twitterUrls.handleUrl(word)} text={text} />);
+											}
+											return (<span>{text}</span>);
+										})}
 									</div>
 								</li>							
 							);

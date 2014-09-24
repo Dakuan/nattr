@@ -66,24 +66,24 @@ gulp.task('server', ['server:start'], function () {
 
 // test the things
 gulp.task('test', ['scripts'], function () {
-    // return gulp.src(__dirname).pipe(jest({
-    //     scriptPreprocessor: "./spec/support/preprocessor.js",
-    //     unmockedModulePathPatterns: [
-    //         "node_modules/react",
-    //         "node_modules/request"
-    //     ],
-    //     testFileExtensions: ['js', 'react'],
-    //     testDirectoryName: "spec",
-    //     testPathIgnorePatterns: [
-    //         "node_modules",
-    //         "spec/support"
-    //     ],
-    //     moduleFileExtensions: [
-    //         "js",
-    //         "json",
-    //         "react"
-    //     ]
-    // }));
+    return gulp.src(__dirname).pipe(jest({
+        scriptPreprocessor: "./spec/preprocessor.js",
+        unmockedModulePathPatterns: [
+            "node_modules/react",
+            "node_modules/request"
+        ],
+        testFileExtensions: ['js', 'react'],
+        testDirectoryName: "spec",
+        testPathIgnorePatterns: [
+            "node_modules",
+            "./spec/preprocessor.js"
+        ],
+        moduleFileExtensions: [
+            "js",
+            "json",
+            "react"
+        ]
+    }));
 });
 
 // compile the react files so the server can render them
