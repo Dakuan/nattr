@@ -1,0 +1,40 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var s = {
+	width: '40px',
+	height: '40px'
+};
+
+var UpdateList = React.createClass({
+	render: function() {
+		return (
+			<div className="messages-container">
+				<ul className="media-list" id="messages">
+					{
+						this.props.updates.map(function (update) {
+							return(							
+								<li className="media">
+								  	<a className="pull-left" href={"http://twitter.com/" + update.name} target="_blank">
+    									<img className="media-object" src={update.avatar || 'http://static.tumblr.com/d243ef43eb98da500f17caf27591328f/idtiyzz/BrKmmge1w/tumblr_static_grumpy_cat_.png'} style={s}/>
+									</a>
+									<div className="media-body">
+										<div className="media-heading">										
+											<h4>{update.name}</h4>											
+										</div>	
+										{update.text}
+									</div>
+								</li>							
+							);
+						})
+					}
+				</ul>
+			</div>
+		);
+	}
+});
+
+module.exports = UpdateList;

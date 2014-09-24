@@ -1,0 +1,22 @@
+# local config that I don't want to commit
+app/server/config/secret.json
+
+# deps
+node_modules/
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Build files
+build/js/*
+build/css/*
+build/server/*
+
+# Jest crap
+node_modules/gulp-jest/node_modules/jest-cli/.haste_cache/*
