@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"no tests yet\" && exit 0",
+    "test": "gulp test",
     "build": "STATIC_ROOT=./static NODE_ENV=production browserify ./app/client/app.js  --extension=.react  --extension=.js | uglifyjs -cm > build/js/app.js && gulp less && jsx -x react ./app/ui/ ./build/server/ui && gulp server-js",
     "postinstall": "npm run build"
   },

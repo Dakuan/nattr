@@ -3,42 +3,14 @@
  */
 
 var React = require('react'),
+	parser = require('../util/content-parser'),
+	twitterUrls = require('../util/urls/twitter-urls'),
 	BlankLink = require('./blank-link');
 
 var s = {
 	width: '40px',
 	height: '40px'
 };
-
-function _detectUrl (word) {
-    return /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(word);
-}
-
-function _detectHash (word) {
-	return word[0] === '#';
-}
-
-function _detectHandle (word) {
-	return word[0] === '@';
-}
-
-function _sanitizeHandle (word) {
-	// remove the @ 
-	var res = word.slice(1, word.length);
-	// remove a trailing colon for things like "RT @MostlyHarmlessD: hello!"
-	if(res[--res.length] === ':') {
-		res = res.slice(0, res.length - 1);
-	}
-	return res;
-}
-
-function _twitterHandleUrl (word) {
-	return 'https://twitter.com/' + _sanitizeHandle(word);
-}
-
-function _twitterHashUrl (word) {
-	return "https://twitter.com/hashtag/" + word.slice(1, word.length);
-}
 
 var UpdateList = React.createClass({
 	render: function() {
@@ -57,15 +29,15 @@ var UpdateList = React.createClass({
 											<h4>{update.name}</h4>											
 										</div>	
 										{update.text.split(' ').map(function(word, index, array) {
-											var text = (index === --array.length) ? word : word + ' ';
- 											if(_detectUrl(word)) { 
+											var text = (index === (array.length)) ? word : word + ' ';
+ 											if(parser.url.isUrl(word)) { 
 												return (<BlankLink href={word} text={text} />);
 											}
-											if(_detectHash(word)) {
-												return (<BlankLink href={_twitterHashUrl(word)} text={text} />);
+											if(parser.twitter.isHash(word)) {
+												return (<BlankLink href={twitterUrls.hashTagUrl(word)} text={text} />);
 											}
-											if(_detectHandle(word)) {
-												return (<BlankLink href={_twitterHandleUrl(word)} text={text} />);
+											if(parser.twitter.isHandle(word)) {
+												return (<BlankLink href={twitterUrls.handleUrl(word)} text={text} />);
 											}
 											return (<span>{text}</span>);
 										})}
