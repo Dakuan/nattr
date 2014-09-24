@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- 0.10.26
+notifications:
+  hipchat: 713f63621f441fc7e38c9e40107553@270461
+before_script:
+- npm install -g gulp
+script:
+- npm test
+deploy:
+  provider: heroku
+  strategy: git
+  app:
+    master: nattr
+  api_key:
+    secure: NLTKQM5mUUFNXBlYPM7+KrKdVFneohkUFGXRwh7bM0Np5OOJ0Z6b48YjHy734fxW1KzknWtEusriarWSyjYTKw7R2Q6UrSK02bS6MuNT/FsOESlx1gLRhOLAu0JHTnAtr9vMsjT3O/qI8xNvt6FpxLqzEjo5HcAkMpPHV9hCtUE=

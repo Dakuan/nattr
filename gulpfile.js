@@ -31,8 +31,7 @@ gulp.task('less', function () {
         .pipe(plumber())
         .pipe(less())
         .pipe(base64({
-            baseDir: './app',
-            debug: true        
+            baseDir: './app'      
         }))
         .pipe(gulp.dest('./build/css'));
 });
