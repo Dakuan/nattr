@@ -10,11 +10,17 @@ var UpdatesScreen = React.createClass({
 
 	render: function() {
 		return (
-			<div className="list-container">									
-				<div className="update-scroller">
-					<UpdateList updates={this.props.updates} />
+			<div style={{'min-height': '100%', height: '100%'}}>
+				<header>
+					<h1>nattr</h1>
+					<a href="/logout" className="logout"><i className="fa fa-sign-out"></i></a>
+				</header>	
+				<div className="list-container">									
+					<div className="update-scroller">
+						<UpdateList updates={this.props.updates} />
+					</div>
+					<CreateUpdateForm createUpdate={this.props.onCreateUpdate} />
 				</div>
-				<CreateUpdateForm createUpdate={this.props.onCreateUpdate} />
 			</div>
 		);
 	}
