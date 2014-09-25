@@ -1,0 +1,24 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react'),
+	UpdateList = require('../update-list');
+	CreateUpdateForm = require('../create-update-form');
+
+var UpdatesScreen = React.createClass({
+
+	render: function() {
+		return (
+			<div className="list-container">									
+				<div className="update-scroller">
+					<UpdateList updates={this.props.updates} />
+				</div>
+				<CreateUpdateForm createUpdate={this.props.onCreateUpdate} />
+			</div>
+		);
+	}
+
+});
+
+module.exports = UpdatesScreen;

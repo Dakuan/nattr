@@ -4,11 +4,11 @@ module.exports = {
     addUpdate: function (update) {
         this.dispatch(UpdateActionTypes.ADD_UPDATE, update);
     },
-    createUpdate: function (text) {
+    createUpdate: function (text, name) {
 
     	// bundle into a payload
     	var payload = {
-            name: 'ME!',
+            name: name || 'MOI',
             text: text
     	};
 

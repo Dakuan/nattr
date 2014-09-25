@@ -54,7 +54,9 @@ gulp.task('server:start', function () {
     server.listen({
         path: 'app/server/index.js',
         env: {
-            NODE_ENV: 'local'
+            NODE_ENV: 'local',
+            host: 'localhost:3000',
+            mongo_url: 'mongodb://localhost/nattr'
         }
     });
 });

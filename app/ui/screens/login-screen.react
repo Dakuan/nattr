@@ -1,0 +1,19 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var LoginScreen = React.createClass({
+
+	render: function() {
+		return (
+			<div>
+				<a href="/auth/twitter" className="btn btn-default" style={{'margin-top': '300px'}}>Login With twitter</a>
+			</div>
+		);
+	}
+
+});
+
+module.exports = LoginScreen;
