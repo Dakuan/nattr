@@ -4,6 +4,7 @@ var Fluxxor = require('fluxxor'),
 
         initialize: function () {
             this._updates = [];
+            this.bindActions(UpdateActionTypes.ADD_TWEET, "onAddUpdate");
             this.bindActions(UpdateActionTypes.ADD_UPDATE, "onAddUpdate");
             this.bindActions(UpdateActionTypes.CREATE_UPDATE, "onAddUpdate");
         },

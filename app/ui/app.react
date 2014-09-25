@@ -46,7 +46,7 @@ var Nattr = React.createClass({
 
 	_createUpdate: function (text) {
 		var user = this.props.flux.stores.userSessionStore.getUser();
-		this.props.flux.actions.createUpdate(text, user.name);
+		this.props.flux.actions.createUpdate(text, user);
 	},
 
 	_switchScreen: function(){

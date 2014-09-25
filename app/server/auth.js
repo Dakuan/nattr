@@ -21,6 +21,8 @@ module.exports = function (passport) {
             // asynchronous
             process.nextTick(function () {
 
+                console.log(profile);
+
                 // find the user in the database based on their facebook id
                 User.findOne({
                     'twitter.id': profile.id
@@ -42,7 +44,7 @@ module.exports = function (passport) {
                         // doesnt exist so we need a new one
                         user = new User();
                     }
-
+                    user.avatar = profile._json.profile_image_url || 'http://static.tumblr.com/d243ef43eb98da500f17caf27591328f/idtiyzz/BrKmmge1w/tumblr_static_grumpy_cat_.png';
                     user.name = user.name || twitterData.username;
                     user.twitter = twitterData;
 

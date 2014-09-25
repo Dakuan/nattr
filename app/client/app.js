@@ -31,6 +31,6 @@ var flux = new Fluxxor.Flux({
 var socket = require('./sockets/update-socket')();
 
 socket.on('chat message', flux.actions.addUpdate);
-socket.on('tweet', flux.actions.addUpdate);
+socket.on('tweet', flux.actions.addTweet);
 
 React.renderComponent(<Nattr flux={flux} /> , app);

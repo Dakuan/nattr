@@ -3,14 +3,38 @@
  */
 
 var React = require('react'),
-	parser = require('../util/content-parser'),
-	twitterUrls = require('../util/urls/twitter-urls'),
-	BlankLink = require('./blank-link');
+	UpdateTypes = require('../constants/update-types'),	
+	Tweet = require('./tweet');
+
 
 var s = {
 	width: '40px',
 	height: '40px'
 };
+
+
+function _renderUpdate (update) {
+	switch(update.updateType) {
+		case UpdateTypes.TWEET:
+			return (<Tweet content={update.content} />); 
+			break;
+		default: {
+			return (				
+				<li className={(update.me ? 'me media' : 'media')}>
+					
+					<img className="media-object pull-left" src={update.content.user.avatar} style={s}/>
+					
+					<div className="media-body">
+						<div className="media-heading">										
+							<h4>{update.content.user.name}</h4>											
+						</div>	
+						{update.content.text}
+					</div>
+				</li>				
+			);
+		}
+	}
+}
 
 var UpdateList = React.createClass({
 	render: function() {
@@ -19,31 +43,7 @@ var UpdateList = React.createClass({
 				<ul className="media-list" id="messages">
 					{
 						this.props.updates.map(function (update) {
-							return(							
-								<li className="media">
-								  	<a className="pull-left" href={"http://twitter.com/" + update.name} target="_blank">
-    									<img className="media-object" src={update.avatar || 'http://static.tumblr.com/d243ef43eb98da500f17caf27591328f/idtiyzz/BrKmmge1w/tumblr_static_grumpy_cat_.png'} style={s}/>
-									</a>
-									<div className="media-body">
-										<div className="media-heading">										
-											<h4>{update.name}</h4>											
-										</div>	
-										{update.text.split(' ').map(function(word, index, array) {
-											var text = (index === (array.length)) ? word : word + ' ';
- 											if(parser.url.isUrl(word)) { 
-												return (<BlankLink href={word} text={text} />);
-											}
-											if(parser.twitter.isHash(word)) {
-												return (<BlankLink href={twitterUrls.hashTagUrl(word)} text={text} />);
-											}
-											if(parser.twitter.isHandle(word)) {
-												return (<BlankLink href={twitterUrls.handleUrl(word)} text={text} />);
-											}
-											return (<span>{text}</span>);
-										})}
-									</div>
-								</li>							
-							);
+							return _renderUpdate(update);					
 						})
 					}
 				</ul>
