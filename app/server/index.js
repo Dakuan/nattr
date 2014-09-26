@@ -37,7 +37,7 @@ app.use(session({
 }));
 
 // Login
-require('./auth')(passport);
+require('./auth/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 

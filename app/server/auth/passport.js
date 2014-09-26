@@ -1,5 +1,5 @@
-var CONFIG = require('./config/config'),
-    User = require('./data/user-data'),
+var CONFIG = require('../config/config'),
+    User = require('../data/user-data'),
     TwitterStrategy = require('passport-twitter').Strategy;
 
 module.exports = function (passport) {
