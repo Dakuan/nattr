@@ -4,14 +4,8 @@
 
 var React = require('react'),
 	UpdateTypes = require('../constants/update-types'),	
+	ChatMessage = require('./chat-message'),
 	Tweet = require('./tweet');
-
-
-var s = {
-	width: '40px',
-	height: '40px'
-};
-
 
 function _renderUpdate (update) {
 	switch(update.updateType) {
@@ -19,19 +13,7 @@ function _renderUpdate (update) {
 			return (<Tweet content={update.content} />); 
 			break;
 		default: {
-			return (				
-				<li className={(update.me ? 'me media' : 'media')}>
-					
-					<img className="media-object pull-left" src={update.content.user.avatar} style={s}/>
-					
-					<div className="media-body">
-						<div className="media-heading">										
-							<h4>{update.content.user.name}</h4>											
-						</div>	
-						{update.content.text}
-					</div>
-				</li>				
-			);
+			return (<ChatMessage update={update} />);
 		}
 	}
 }
