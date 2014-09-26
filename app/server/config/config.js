@@ -4,9 +4,9 @@ var nconf = require('nconf'),
 nconf.argv()
     .env()
     .file({
-        file: path.join(__dirname, './', process.env.NODE_ENV + '.json')
+    	file: path.join(__dirname, './', process.env.NODE_ENV + '.json')
     }).file({
-    	file: path.join(__dirname, './secret.json')
+    	file: path.join(__dirname, './secret.json')            	
     });
 
 module.exports = nconf;

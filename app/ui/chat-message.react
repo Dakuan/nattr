@@ -1,0 +1,30 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var s = {
+	width: '40px',
+	height: '40px'
+};
+
+var ChatMessage = React.createClass({
+
+	render: function() {
+		return (
+			<li className={(this.props.update.me ? 'me media' : 'media')}>			
+				<img className="media-object pull-left" src={this.props.update.content.user.avatar} style={s}/>				
+				<div className="media-body">
+					<div className="media-heading">										
+						<h4>{this.props.update.content.user.name}</h4>											
+					</div>	
+					{this.props.update.content.text}
+				</div>
+			</li>	
+		);
+	}
+
+});
+
+module.exports = ChatMessage;

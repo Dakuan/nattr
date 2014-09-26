@@ -1,0 +1,31 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var LoginScreen = React.createClass({
+
+	render: function() {
+		return (
+			<div className="login-screen container">
+				<header>
+					<h1>nattr</h1>
+				</header>
+				<section>
+					<h1 className="login-title">Login</h1>
+					<p>
+						There isn't really any good reason for this app to exist, and yet it does.
+					</p>
+					<a href="/auth/twitter" className="btn btn-primary">
+						<i className="fa fa-twitter"> </i>
+						&nbsp; login with twitter
+					</a>
+				</section>
+			</div>
+		);
+	}
+
+});
+
+module.exports = LoginScreen;

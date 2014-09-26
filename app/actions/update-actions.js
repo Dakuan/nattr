@@ -1,21 +1,31 @@
-var UpdateActionTypes = require('../constants/update-action-types');
-var socket = require('../client/sockets/update-socket')();
+var UpdateActionTypes = require('../constants/update-action-types'),
+    UpdateTypes = require('../constants/update-types'),
+    socket = require('../client/sockets/update-socket')();
 module.exports = {
-    addUpdate: function (update) {
+    addUpdate: function (update) {        
         this.dispatch(UpdateActionTypes.ADD_UPDATE, update);
     },
-    createUpdate: function (text) {
+    addTweet: function (tweet) {
+        this.dispatch(UpdateActionTypes.ADD_TWEET, {
+            updateType: UpdateTypes.TWEET,
+            content: tweet
+        });
+    },
+    createUpdate: function (text, user) {
+        var update = {
+            updateType: UpdateTypes.CHAT_MESSAGE,
+            content: {
+                user: user,
+                text: text
+            }
+        };
 
-    	// bundle into a payload
-    	var payload = {
-            name: 'ME!',
-            text: text
-    	};
+        // sent it do everyone else
+        socket.emit('chat message', update);
 
-    	// sent it do everyone else
-        socket.emit('chat message', payload);
+        update.me = true;
 
         // dispatch for local rendering
-        this.dispatch(UpdateActionTypes.CREATE_UPDATE, payload);
+        this.dispatch(UpdateActionTypes.CREATE_UPDATE, update);
     }
 };

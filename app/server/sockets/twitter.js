@@ -13,11 +13,7 @@ t.follow('8820362');
 
 module.exports = function (io) {
     t.on('tweet', _.throttle(function (tweet) {
-        io.emit('tweet', {
-            avatar: tweet.user.profile_image_url,
-            name: tweet.user.screen_name,
-            text: tweet.text
-        });
+        io.emit('tweet', tweet);
     }, 5000));
 
     t.on('error', function (err) {

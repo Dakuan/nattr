@@ -4,44 +4,61 @@
 
 var React = require('react'),
 	UpdateList = require('./update-list'),
-	CreateUpdateForm = require('./create-update-form');
+	Router = require('../client/router'),
+	LoginScreen = require('./screens/login-screen'),
+	UpdatesScreen = require('./screens/updates-screen');
 
 var Nattr = React.createClass({
 	
 	componentDidMount: function() {
-		this.updateStore = this.props.flux.stores.updateStore;
+		
 		var self = this;
+
+		this.updateStore = this.props.flux.stores.updateStore;		
 		this.updateStore.on('change', function () {
 			var s = this.state;
 			s.updates = this.updateStore.getUpdates();
+			this.setState(s);
+		}.bind(self));
+
+		this.routeStore = this.props.flux.stores.routeStore;
+		this.routeStore.on('change', function () {
+			var s = this.state;
+			s.route = this.routeStore.getRoute();
 			this.setState(s);
 		}.bind(self));
 	},
 
 	getInitialState: function() {
 		return {
-			updates: this.props.flux.stores.updateStore.getUpdates()
+			updates: this.props.flux.stores.updateStore.getUpdates(),
+			route: this.props.flux.stores.routeStore.getRoute()
 		};
 	},
 
 	render: function() {
 		return (
 			<div style={{'min-height': '100%', height: '100%'}}>
-				<header>
-					<h1>nattr</h1>
-				</header>	
-				<div className="list-container">									
-					<div className="update-scroller">
-						<UpdateList updates={this.state.updates} />
-					</div>
-					<CreateUpdateForm createUpdate={this._createUpdate} />
-				</div>
+				{this._switchScreen()}
 			</div>
 		);
 	},
 
 	_createUpdate: function (text) {
-		this.props.flux.actions.createUpdate(text);
+		var user = this.props.flux.stores.userSessionStore.getUser();
+		this.props.flux.actions.createUpdate(text, user);
+	},
+
+	_switchScreen: function(){
+		var screen;
+		switch(this.state.route.handler) {
+			case 'root':
+				screen = (<UpdatesScreen updates={this.state.updates} onCreateUpdate={this._createUpdate} />)
+				break;
+			default:
+				screen = (<LoginScreen/>)				
+		}
+		return screen
 	}
 
 });
