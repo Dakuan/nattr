@@ -3,10 +3,22 @@
  */
 
 var React = require('react'),
-	UpdateList = require('../update-list');
+	UpdateList = require('../update-list'),
+	Fluxxor = require('fluxxor'),
+	FluxChildMixin = Fluxxor.FluxChildMixin(React),
+	StoreWatchMixin = Fluxxor.StoreWatchMixin,
 	CreateUpdateForm = require('../create-update-form');
 
 var UpdatesScreen = React.createClass({
+	
+	 mixins: [FluxChildMixin, StoreWatchMixin("updateStore")],
+
+	getStateFromFlux: function() {
+	    var flux = this.getFlux();
+    	return {
+    		updates: flux.store("updateStore").getUpdates(),
+    	};
+  	},
 
 	render: function() {
 		return (
@@ -17,13 +29,19 @@ var UpdatesScreen = React.createClass({
 				</header>	
 				<div className="list-container">									
 					<div className="update-scroller">
-						<UpdateList updates={this.props.updates} />
+						<UpdateList updates={this.state.updates} />
 					</div>
-					<CreateUpdateForm createUpdate={this.props.onCreateUpdate} />
+					<CreateUpdateForm createUpdate={this._onCreateUpdate} />
 				</div>
 			</div>
 		);
-	}
+	},
+
+	_onCreateUpdate: function (text) {
+		var flux = this.getFlux()
+		var user = flux.stores.userSessionStore.getUser();
+		flux.actions.createUpdate(text, user);
+	},
 
 });
 

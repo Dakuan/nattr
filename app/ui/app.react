@@ -6,35 +6,21 @@ var React = require('react'),
 	UpdateList = require('./update-list'),
 	Router = require('../client/router'),
 	LoginScreen = require('./screens/login-screen'),
+	Fluxxor = require("fluxxor"),
+    FluxMixin = Fluxxor.FluxMixin(React),
+    StoreWatchMixin = Fluxxor.StoreWatchMixin, 
 	UpdatesScreen = require('./screens/updates-screen');
 
 var Nattr = React.createClass({
+
+	mixins: [FluxMixin,StoreWatchMixin("routeStore")],
 	
-	componentDidMount: function() {
-		
-		var self = this;
-
-		this.updateStore = this.props.flux.stores.updateStore;		
-		this.updateStore.on('change', function () {
-			var s = this.state;
-			s.updates = this.updateStore.getUpdates();
-			this.setState(s);
-		}.bind(self));
-
-		this.routeStore = this.props.flux.stores.routeStore;
-		this.routeStore.on('change', function () {
-			var s = this.state;
-			s.route = this.routeStore.getRoute();
-			this.setState(s);
-		}.bind(self));
-	},
-
-	getInitialState: function() {
-		return {
-			updates: this.props.flux.stores.updateStore.getUpdates(),
-			route: this.props.flux.stores.routeStore.getRoute()
-		};
-	},
+	getStateFromFlux: function() {
+	    var flux = this.getFlux();
+    	return {
+    		route: flux.store("routeStore").getRoute(),
+    	};
+  	},
 
 	render: function() {
 		return (
@@ -44,16 +30,11 @@ var Nattr = React.createClass({
 		);
 	},
 
-	_createUpdate: function (text) {
-		var user = this.props.flux.stores.userSessionStore.getUser();
-		this.props.flux.actions.createUpdate(text, user);
-	},
-
 	_switchScreen: function(){
 		var screen;
 		switch(this.state.route.handler) {
 			case 'root':
-				screen = (<UpdatesScreen updates={this.state.updates} onCreateUpdate={this._createUpdate} />)
+				screen = (<UpdatesScreen />)
 				break;
 			default:
 				screen = (<LoginScreen/>)				
