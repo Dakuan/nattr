@@ -20,9 +20,6 @@ module.exports = function (passport) {
         function (req, token, tokenSecret, profile, done) {
             // asynchronous
             process.nextTick(function () {
-
-                console.log(profile);
-
                 // find the user in the database based on their facebook id
                 User.findOne({
                     'twitter.id': profile.id
