@@ -1,8 +1,8 @@
 var Fluxxor = require('fluxxor'),
     UserSessionStore = Fluxxor.createStore({
 
-        initialize: function (user) {
-            this._user = user;
+        initialize: function (opts) {
+            this._user = opts.user;
         },
 
         getUser: function () {

@@ -4,6 +4,7 @@ var express = require('express'),
     Fluxxor = require('fluxxor'),
     CONFIG = require('../config/config'),
     UpdateStore = require('../../stores/update-store'),
+    UsersStore = require('../../stores/users-store'),
     UserSessionStore = require('../../stores/user-session-store'),
     RouteStore = require('../../stores/route-store'),
     componentLoader = require('../util/component-loader'),
@@ -12,7 +13,6 @@ var express = require('express'),
 
 root.get('/', function (req, res, next) {
 
-    console.log(CONFIG.get('host'));
     if (req.user) {
 
         res.cookie('user', req.user);
@@ -23,7 +23,8 @@ root.get('/', function (req, res, next) {
             userSessionStore: new UserSessionStore(req.user),
             routeStore: new RouteStore({
                 path: '/'
-            })
+            }),
+            usersStore: new UsersStore()
         }, require('../../actions/actions')),
 
             html = React.renderComponentToString(component({
@@ -44,7 +45,8 @@ root.get('/login', function (req, res, next) {
         userSessionStore: new UserSessionStore(),
         routeStore: new RouteStore({
             path: '/login'
-        })
+        }),
+        usersStore: new UsersStore()
     }, require('../../actions/actions')),
         html = React.renderComponentToString(component({
             flux: flux

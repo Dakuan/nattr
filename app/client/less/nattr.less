@@ -1,104 +1,120 @@
+@import "util";
 @import "colors";
 @import "../../../node_modules/bootstrap/less/bootstrap.less";
 @import "header";
 @import "buttons";
+@import "login";
+@import "screens";
 
-html {
+.full-height {
     height: 100%;
     min-height: 100%;
 }
+
+html {
+    .full-height;
+}
+
 body {
     background-image: url('/public/images/bg.png');
-    background-color: rgb(50, 50, 54);
-    height: 100%;
-    min-height: 100%;
+    background-color: @background-grey;
+    .full-height();
     font-weight: 300;
     font-family: 'Open Sans', sans-serif;
+    overflow: hidden;
 }
 
 h1, h2, h3, h4 {
     font-weight: 600;
 }
-.login-screen {    
-    h1.login-title {
-        margin-bottom: 1em;
-    }
-    p {
-        background-color: rgba(255, 255, 255, 0.53);
-        font-size: 1.2em;
-        display: table;
-
-    }
-    .btn-primary {
-        margin-bottom: -22%;
-    }
-    top: 60px;
-    background-color: white;
-    position: relative;
-    border-radius: 5px;
-    padding: 15px;
-    background-size: cover;
-    background-image: url('/public/images/nattr.gif');
-    background-position: right; 
-    padding-bottom: 20%;
-}
 
 #app {
-    height: 100%;
-    min-height: 100%;
-    .list-container {
-        .make-lg-column(6);
-        .make-lg-column-offset(3);  
-        min-height: 100%;
+    .full-height();    
+    .users-list-container {
+        display: none;
+        .at-sm({
+            display: block;
+        });
+        .make-sm-column(3);
+        border-right: 1px solid rgb(230, 230, 230);             
+        min-height: 100%;        
+        padding-top: 39px;
         background-color: white;
-        box-shadow: -5px 0px 5px rgba(0, 0, 0, 0.39), 5px 0px 5px rgba(0, 0, 0, 0.39);
-        .form-container {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;              
-            .create-update-form {
-                .make-lg-column(6);
-                .make-lg-column-offset(3);
-                box-shadow: inset 0px 1px white;
-                border-top: 1px solid @grey;                
-                padding-top: 20px;
-                height: 120px;
-                background-color: @grey;
-                .btn {
-                    width: 100%;
-                }            
-            }
+        .media {
+            padding: 0;
+        }
+    }
+
+    .updates-list-container {
+        .make-sm-column(9);
+        .full-height();
+        padding-left: 0;
+        padding-right: 0;
+        background-color: white;
+        padding-bottom: 159px;
+        margin-top: 39px;
+
+        .update-scroller {
+            .full-height();
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
     }
 }
-.update-scroller {
-    width: 100%;
-    padding-bottom: 128px;
-    padding-top: 39px;
+
+.form-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;           
+
+    .create-update-form {
+        .make-sm-column(9);  
+        .make-sm-column-offset(3);      
+        .at-md({
+            .make-sm-column(6);        
+            .make-sm-column-offset(4);
+        });
+
+        box-shadow: inset 0px 1px white;
+        border-top: 1px solid @grey;                
+        padding-top: 20px;
+        height: 120px;
+        background-color: @grey;
+
+        .btn {
+            width: 100%;
+        }            
+    }
 }
+
+.media {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 15px;
+    &.me {
+        background-color: @me-blue!important;
+        &:nth-child(even) {
+            background:  lighten(@me-blue, 20%)!important;
+        }
+    }
+    .twitter {
+        @twitter-box-size: 40px;
+        width: @twitter-box-size;
+        height: @twitter-box-size;
+        font-size: 2em;
+        margin-top: -4px;
+        padding-left: 7px;
+    }
+    .user {
+        color: @orange;
+        margin-right: 5px;
+    }
+}
+
+
 #messages {
-
-    height: 100%;
-    min-height: 100%;
-    .media {
-        margin-top: 0;
-        margin-bottom: 0;
-        margin-left: -15px;
-        margin-right: -15px;
-        padding: 15px;
-        &.me {
-            background-color: rgba(0, 163, 255, 0.16)!important;
-        }
-        .twitter {
-            width: 40px;
-            height: 40px;
-            font-size: 2em;
-            margin-top: -4px;
-            padding-left: 7px;
-        }
-    }
-
+    .full-height();
     li {
         &:nth-child(odd) {
             background: rgba(238, 238, 238, 0.43);

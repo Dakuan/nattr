@@ -1,5 +1,6 @@
 var actionSources = [
     	require('./update-actions'),
+    	require('./users-actions'),
     	require('./route-actions')
 	],
     _ = require('underscore');

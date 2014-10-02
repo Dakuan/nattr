@@ -1,0 +1,32 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var UsersList = React.createClass({
+
+	render: function() {
+		return (
+			<div className="users-list-container" style={{'min-height': '100%', height: '100%'}}>
+				<h2>Online</h2>
+				<ul className="media-list" style={{'min-height': '100%', height: '100%'}}>
+					{this.props.users.map(function(user) {
+						return (
+							<li className="media" key={user._id}>
+							  	<span className="pull-left user">
+									<i className={'fa fa-user'}></i>
+								</span>
+								<div className="media-body">
+									<p>{user.name}</p>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			</div>	
+		);
+	}
+});
+
+module.exports = UsersList;

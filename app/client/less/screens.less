@@ -1,0 +1,15 @@
+.update-screen-container {
+	.full-height();
+    .make-sm-column(12);
+    .at-md({
+        .make-sm-column(8);
+        .make-sm-column-offset(2); 
+    });
+    @shadow-size: 5px;
+    box-shadow: -@shadow-size 0px @shadow-size @shadow-black, @shadow-size 0px @shadow-size @shadow-black;    
+}
+
+.login-screen-container {
+	.make-sm-column(6);
+	.make-sm-column-offset(3); 	
+}
