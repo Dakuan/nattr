@@ -5,15 +5,23 @@
 var React = require('react'),
 	UpdateTypes = require('../constants/update-types'),	
 	ChatMessage = require('./chat-message'),
+	UserJoined = require('./user-joined-update'),
+	UserLeft = require('./user-left-update'),
 	Tweet = require('./tweet');
 
 function _renderUpdate (update) {
 	switch(update.updateType) {
 		case UpdateTypes.TWEET:
-			return (<Tweet content={update.content} />); 
+			return (<Tweet content={update.content} key={update.key} />); 
+			break;
+		case UpdateTypes.USER_JOINED:
+			return (<UserJoined content={update.content} key={update.key} />);
+			break;
+		case UpdateTypes.USER_LEFT:
+			return (<UserLeft content={update.content} key={update.key} />);
 			break;
 		default: {
-			return (<ChatMessage update={update} />);
+			return (<ChatMessage update={update} key={update.key} />);
 		}
 	}
 }

@@ -11,6 +11,7 @@ var React = require('react'),
     RouteStore = require('../stores/route-store'),
     UsersStore = require('../stores/users-store'),
     cookieParser = require('cookie-parser'),
+    _ = require('underscore'),
     Nattr = require('../ui/app');
 
 window.React = require('react');
@@ -41,10 +42,14 @@ if(userString) {
 
 socket.on('chat message', flux.actions.addUpdate);
 socket.on('tweet', flux.actions.addTweet);
-socket.on('user joined', flux.actions.addUser);
+socket.on('user joined', function(user, users) {
+    flux.actions.addUserJoinedNotification(user);
+    flux.actions.setUsers(users);
+});   
 socket.on('users', flux.actions.addUsers);
 socket.on('user left', function (user, users) {
     flux.actions.setUsers(users);
+    flux.actions.addUserLeftNotification(user);
 });
 
 React.renderComponent(<Nattr flux={flux} /> , app);

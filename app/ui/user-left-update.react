@@ -1,0 +1,26 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var UserLeftUpdate = React.createClass({
+
+	render: function() {
+		return (
+			<li className="media user-left" key={this.props.key}>			
+			  	<span className="pull-left">
+					<i className="fa fa-space-shuttle animated bounceInLeft"></i>
+				</span>
+				<div className="media-body">
+					<p>	
+						{this.props.content.user.name + ' left.'}
+					</p>
+				</div>
+			</li>	
+		);
+	}
+
+});
+
+module.exports = UserLeftUpdate;
