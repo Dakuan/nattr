@@ -1,5 +1,7 @@
+@import "prefixer";
 @import "util";
 @import "colors";
+@import "animations";
 @import "../../../node_modules/bootstrap/less/bootstrap.less";
 @import "header";
 @import "buttons";
@@ -106,10 +108,30 @@ h1, h2, h3, h4 {
         margin-top: -4px;
         padding-left: 7px;
     }
+    &.user-joined {
+        background-color: rgb(188, 255, 204)!important;
+        span {
+            transform: rotate(-43deg);
+            color: @orange;
+        }
+        p {
+            margin: 0;
+        }
+    }
+    &.user-left {
+        span {
+            transform: rotate(137deg);
+            color: @orange;
+        }
+        p {
+            margin: 0;
+        }
+    }
     .user {
         color: @orange;
         margin-right: 5px;
     }
+
 }
 
 

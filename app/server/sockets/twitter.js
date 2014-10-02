@@ -19,4 +19,4 @@ module.exports = function (io) {
     t.on('error', function (err) {
         console.log('Oh no');
     });
-}
+};

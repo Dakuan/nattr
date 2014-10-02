@@ -1,0 +1,30 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var UserJoinedUpdate = React.createClass({
+
+	componentDidMount: function() {
+		// this.getDOMNode().children[0].children[0].className = 'fa fa-space-shuttle'
+	},
+
+	render: function() {
+		return (
+			<li className="media user-joined" key={this.props.key}>			
+			  	<span className="pull-left">
+					<i className="fa fa-space-shuttle animated bounceInLeft"></i>
+				</span>
+				<div className="media-body">
+					<p>	
+						{this.props.content.user.name + ' joined!'}
+					</p>
+				</div>
+			</li>	
+		);
+	}
+
+});
+
+module.exports = UserJoinedUpdate;

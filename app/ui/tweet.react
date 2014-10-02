@@ -12,14 +12,13 @@ var s = {
 	height: '40px'
 };
 
-
 var Tweet = React.createClass({
 
 	render: function() {
 		return (
-			<li className="media">
+			<li className="media" key={this.props.key}>
 			  	<a className="pull-left twitter" href={"http://twitter.com/" + this.props.content.user.screen_name} target="_blank">
-					<i className={'fa fa-twitter'}></i>
+					<i className={'fa fa-twitter pulse'}></i>
 				</a>
 				<div className="media-body">
 					<div className="media-heading">										

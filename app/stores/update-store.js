@@ -10,6 +10,7 @@ var Fluxxor = require('fluxxor'),
         },
         
         onAddUpdate: function (payload, type) {
+            payload.key = new Date().getTime();
             this._updates.splice(0, 0, payload);
             this.emit("change");
         },

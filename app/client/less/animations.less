@@ -1,0 +1,38 @@
+@-webkit-keyframes bounceInLeft {
+  0%, 60%, 75%, 90%, 100% {
+    .transition-timing-function(cubic-bezier(0.215, 0.61, 0.355, 1));
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(-20px, 0, 0);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+.bounceInLeft {
+  .animation-duration(0.8s);
+  .animation-name(bounceInLeft);
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    .transform(scale3d(1, 1, 1));
+  }
+
+  50% {
+    .transform(scale3d(1.1, 1.1, 1.1));
+  }
+
+  100% {
+    .transform(scale3d(1, 1, 1));
+  }
+}
+
+.pulse {
+  .animation-duration(0.8s);
+  .animation-name(pulse);
+}

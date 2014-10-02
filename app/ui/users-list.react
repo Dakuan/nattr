@@ -15,7 +15,7 @@ var UsersList = React.createClass({
 						return (
 							<li className="media" key={user._id}>
 							  	<span className="pull-left user">
-									<i className={'fa fa-user'}></i>
+									<i className="fa fa-user"></i>
 								</span>
 								<div className="media-body">
 									<p>{user.name}</p>

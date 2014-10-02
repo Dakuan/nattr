@@ -57,7 +57,7 @@ Room.prototype._onJoin = function (id) {
         this._connections[id].user = user;
         if (!this._haveUser(user._id)) {
             this._users.push(user);
-            this._connections[id].socket.broadcast.emit('user joined', user);
+            this._connections[id].socket.broadcast.emit('user joined', user, this._users);
         }
     }
 };
