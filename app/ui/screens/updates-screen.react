@@ -7,16 +7,18 @@ var React = require('react'),
 	Fluxxor = require('fluxxor'),
 	FluxChildMixin = Fluxxor.FluxChildMixin(React),
 	StoreWatchMixin = Fluxxor.StoreWatchMixin,
+	UsersList = require('../users-list'),
 	CreateUpdateForm = require('../create-update-form');
 
 var UpdatesScreen = React.createClass({
 	
-	 mixins: [FluxChildMixin, StoreWatchMixin("updateStore")],
+	 mixins: [FluxChildMixin, StoreWatchMixin('updateStore', 'usersStore')],
 
 	getStateFromFlux: function() {
 	    var flux = this.getFlux();
     	return {
-    		updates: flux.store("updateStore").getUpdates(),
+    		updates: flux.store('updateStore').getUpdates(),
+    		users: flux.store('usersStore').getUsers()
     	};
   	},
 
@@ -26,12 +28,17 @@ var UpdatesScreen = React.createClass({
 				<header>
 					<h1>nattr</h1>
 					<a href="/logout" className="logout"><i className="fa fa-sign-out"></i></a>
-				</header>	
-				<div className="list-container">									
-					<div className="update-scroller">
-						<UpdateList updates={this.state.updates} />
+				</header>
+				<div className="row" style={{'min-height': '100%', height: '100%'}}>	
+					<UsersList users={this.state.users} />
+					<div className="updates-list-container">										
+						<div className="update-scroller">
+							<UpdateList updates={this.state.updates} />
+						</div>
 					</div>
-					<CreateUpdateForm createUpdate={this._onCreateUpdate} />
+				</div>
+				<div className="row">
+					<CreateUpdateForm createUpdate={this._onCreateUpdate} />				
 				</div>
 			</div>
 		);

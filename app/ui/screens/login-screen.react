@@ -8,7 +8,7 @@ var LoginScreen = React.createClass({
 
 	render: function() {
 		return (
-			<div className="login-screen container">
+			<div className="login-screen-container">
 				<header>
 					<h1>nattr</h1>
 				</header>

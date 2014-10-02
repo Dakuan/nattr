@@ -7,19 +7,18 @@ var express = require('express'),
     passport = require('passport'),
     session = require('express-session'),
     mongoose = require('mongoose'),
+    MongoStore = require('connect-mongo')(session),
     path = require('path');
-
 
 // Connect to mongodb
 var connect = function () {
-    var options = {
+    mongoose.connect(CONFIG.get('mongo_url'), {
         server: {
             socketOptions: {
                 keepAlive: 1
             }
         }
-    };
-    mongoose.connect(CONFIG.get('mongo_url'), options);
+    });
 };
 connect();
 
@@ -30,9 +29,9 @@ mongoose.connection.on('disconnected', connect);
 app.use(session({
     secret: 'rawr',
     saveUninitialized: true,
-    cookie: {
-        maxAge: 3600000
-    },
+    store: new MongoStore({
+        db: mongoose.connection.db,
+    }),
     resave: true
 }));
 

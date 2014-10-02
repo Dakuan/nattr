@@ -14,7 +14,7 @@ var CreateUpdateForm = React.createClass({
 
 	render: function() {
 		return (
-			<div className="form-container container">
+			<div className="form-container">
 			    <form action="" onSubmit={this._onSubmit} className="create-update-form">
 			    	<div className="form-group">
 	        			<input id="m" autoComplete="off" onChange={this._onChange} value={this.state.message} className="form-control" placeholder="Send message..." />
