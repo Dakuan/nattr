@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 
-var React = require('react'),
+var React = require('react/addons'),
 	Fluxxor = require('fluxxor'),
 	_ = require('underscore'),
 	FluxChildMixin = Fluxxor.FluxChildMixin(React);
@@ -14,17 +14,24 @@ var AutoComplete = React.createClass({
 	getInitialState: function() {
 		return {
 			fragment: '',
-			selectedIndex: 0 
+			selectedIndex: 0,
+			hidden: this.props.options.length > 0 
 		};
 	},
 
 	render: function() {
+
+		var cx = React.addons.classSet;
+		var classes = cx({
+			'dropdown list-group': true,
+			'hidden': this.state.hidden
+		});
 		return (
 			<div className="autocomplete" onKeyUp={this._onKeyUp}>
 				<div className="form-group">
-					<input className="form-control" onChange={this._onChange} value={this.state.fragment} />
+					<input className="form-control" onFocus={this._onFocus} onBlur={this._onBlur} onChange={this._onChange} value={this.state.fragment} />
 				</div>
-				<div className="dropdown list-group">
+				<div className={classes}>
 					{
 						this.props.options.map(function(opt, index) {
 							return (<a key={index} className={ index === this.state.selectedIndex ? "list-group-item active" : "list-group-item"}>{opt[this.props.textKey]}</a>)
@@ -47,6 +54,18 @@ var AutoComplete = React.createClass({
 				this._pickSelected();
 				break;
 		}
+	},
+
+	_onBlur: function () {
+		var s = this.state;
+		s.hidden = true;
+		this.setState(s);
+	},
+
+	_onFocus: function () {
+		var s = this.state;
+		s.hidden = false;
+		this.setState(s);
 	},
 
 	_onChange: function (event) {
