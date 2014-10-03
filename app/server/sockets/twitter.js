@@ -10,16 +10,21 @@ var Twitter = require('node-tweet-stream'),
 
 // t.track('pizza');
 // t.follow('8820362');
+// 
 
 module.exports = function (io, following) {
 
-    following.on('change', function () {
-        following.findAll(function (users) {
-            _(users).each(function (user) {
-                t.follow(user.id);
-            });
+    function _follow() {
+        following.findAll().then(function (users) {
+            _.chain(users)
+                .pluck('id')
+                .each(t.follow);
         });
-    });
+    }
+
+    following.on('change', _follow);
+
+    _follow();
 
     t.on('tweet', _.throttle(function (tweet) {
         io.emit('tweet', tweet);

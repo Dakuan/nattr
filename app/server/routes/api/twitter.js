@@ -5,10 +5,6 @@ var express = require('express'),
     CONFIG = require('../../config/config'),
     root = express.Router();
 
-var amqp = require('amqp');
-
-var connection = amqp.createConnection();
-
 var twit = new twitter({
     consumer_key: CONFIG.get('twitter_consumer_key'),
     consumer_secret: CONFIG.get('twitter_consumer_secret'),
@@ -25,11 +21,9 @@ root.get('/user/search', function (req, res, next) {
 
 root.post('/user/follow', function (req, res, next) {
     var user = req.body;
-    console.log(Following);
-    Following.follow(user, function (docs) {
+    Following.follow(user).then(function (docs) {
         res.json(docs);
     });
-
 });
 
 module.exports = root;
