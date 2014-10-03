@@ -4,15 +4,20 @@ var Fluxxor = require('fluxxor'),
     TwitterStore = Fluxxor.createStore({
 
         initialize: function () {
-            this._query = {
-                users: []
-            };
+            this._resetQuery();
             this.bindActions(TwitterActionTypes.SEARCH_USER, '_onUserSearch');
             this.bindActions(TwitterActionTypes.FOLLOW_USER, '_onUserFollow');
         },
 
         getQuery: function () {
             return this._query;
+        },
+
+        _resetQuery: function () {
+            this._query = {
+                users: []
+            };
+            this.emit('change');
         },
 
         _onUserFollow: function (user) {
@@ -28,10 +33,7 @@ var Fluxxor = require('fluxxor'),
         _onUserSearch: function (fragment) {
 
             if (fragment === '') {
-                this._query = {
-                    users: []
-                };
-                this.emit('change');
+                this._resetQuery();                
             } else {
                 if (this._userSearchXhr) {
                     this._userSearchXhr.abort();
