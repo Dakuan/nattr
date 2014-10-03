@@ -6,6 +6,7 @@ var React = require('react'),
 	UpdateList = require('./update-list'),
 	Router = require('../client/router'),
 	LoginScreen = require('./screens/login-screen'),
+	AdminScreen = require('./screens/admin-screen'),
 	Fluxxor = require("fluxxor"),
     FluxMixin = Fluxxor.FluxMixin(React),
     StoreWatchMixin = Fluxxor.StoreWatchMixin, 
@@ -34,10 +35,13 @@ var Nattr = React.createClass({
 		var screen;
 		switch(this.state.route.handler) {
 			case 'root':
-				screen = (<UpdatesScreen />)
+				screen = (<UpdatesScreen />);
+				break;
+			case 'admin':
+				screen = (<AdminScreen />);
 				break;
 			default:
-				screen = (<LoginScreen/>)				
+				screen = (<LoginScreen/>);				
 		}
 		return screen
 	}

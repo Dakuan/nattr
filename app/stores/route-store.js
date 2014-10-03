@@ -17,6 +17,11 @@ var Fluxxor = require('fluxxor'),
                 handler: "root"
             }]);
 
+            this.router.add([{
+                path: '/admin',
+                handler: "admin"
+            }]);
+
             this.route = this.router.recognize(options.path || '/login')[0];;
 
             this.bindActions(RouteActionTypes.CHANGE_ROUTE, "onChangeRoute");

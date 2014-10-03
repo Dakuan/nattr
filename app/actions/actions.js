@@ -1,6 +1,7 @@
 var actionSources = [
     	require('./update-actions'),
     	require('./users-actions'),
+    	require('./twitter-actions'),
     	require('./route-actions')
 	],
     _ = require('underscore');

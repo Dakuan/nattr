@@ -8,10 +8,19 @@ var Twitter = require('node-tweet-stream'),
         token_secret: CONFIG.get('twitter_token_secret')
     });
 
-t.track('pizza');
-t.follow('8820362');
+// t.track('pizza');
+// t.follow('8820362');
 
-module.exports = function (io) {
+module.exports = function (io, following) {
+
+    following.on('change', function () {
+        following.findAll(function (users) {
+            _(users).each(function (user) {
+                t.follow(user.id);
+            });
+        });
+    });
+
     t.on('tweet', _.throttle(function (tweet) {
         io.emit('tweet', tweet);
     }, 5000));

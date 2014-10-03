@@ -1,0 +1,85 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react/addons'),
+	Fluxxor = require('fluxxor'),
+	FluxChildMixin = Fluxxor.FluxChildMixin(React),
+	_ = require('underscore'),
+	AutoComplete = require('../autocomplete');
+
+var AdminScreen = React.createClass({
+
+	mixins: [FluxChildMixin],
+
+	getInitialState: function() {
+		return {
+			selectedTwitterUser: false,
+			twitterUserQuery: {
+				fragment: '',
+				users: []
+			} 
+		};
+	},
+
+	componentWillMount: function() {
+		var flux = this.getFlux(),
+			store = flux.stores.twitterStore;
+		store.on('change', this._onTwitterStoreChange);
+	},
+
+	componentWillUnmount: function() {
+		var flux = this.getFlux(),
+			store = flux.stores.twitterStore;
+		store.off('change', this._onTwitterStoreChange);
+	},
+
+	render: function() {
+
+		var cx = React.addons.classSet;
+		var classes = cx({
+			'btn': true,
+			'btn-follow': true,
+			'disabled': !this.state.selectedTwitterUser
+		});
+
+		return (
+			<div className="admin-screen-container container">				
+				<h1>Admin</h1>
+				<div className="col-md-3">				
+					<AutoComplete onSelected={this._onSelected} actionKey="userSearch" options={this.state.twitterUserQuery.users} textKey="screen_name" />
+				</div>
+				<div>
+					<a href="#" onClick={this._onClick} className={classes}>Follow</a>
+				</div>
+				<p>some things</p>
+			</div>
+		);
+	},
+
+	_onSelected: function (user) {
+		var s = this.state;
+		s.selectedTwitterUser = user;
+		s.twitterUserQuery = {
+			users: []
+		};
+		this.setState(s);
+	},
+
+	_onClick: function() {
+		this.getFlux().actions.followUser(this.state.selectedTwitterUser);
+	},
+
+	_onTwitterStoreChange: function() {
+		var flux = this.getFlux(),
+			store = flux.stores.twitterStore,
+			q = store.getQuery(),
+			s = this.state;
+		q.users = _(q.users).first(5);			
+		s.twitterUserQuery = q;
+		this.setState(s);
+	}
+
+});
+
+module.exports = AdminScreen;

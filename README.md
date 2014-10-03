@@ -16,6 +16,8 @@ A chat application that interlaces social media feeds.
 
 Currently there is nothing other than Javascript in this application so our depenecy list is rather short:
 * nodejs
+* mongodb
+* rabbitMQ
 
 ### Getting started
 Once node is installed, all we need are the dependencies and the gulp CLI

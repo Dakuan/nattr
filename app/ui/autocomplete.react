@@ -1,0 +1,90 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react'),
+	Fluxxor = require('fluxxor'),
+	_ = require('underscore'),
+	FluxChildMixin = Fluxxor.FluxChildMixin(React);
+
+var AutoComplete = React.createClass({
+
+	mixins: [FluxChildMixin],
+
+	getInitialState: function() {
+		return {
+			fragment: '',
+			selectedIndex: 0 
+		};
+	},
+
+	render: function() {
+		return (
+			<div className="autocomplete" onKeyUp={this._onKeyUp}>
+				<div className="form-group">
+					<input className="form-control" onChange={this._onChange} value={this.state.fragment} />
+				</div>
+				<div className="dropdown list-group">
+					{
+						this.props.options.map(function(opt, index) {
+							return (<a key={index} className={ index === this.state.selectedIndex ? "list-group-item active" : "list-group-item"}>{opt[this.props.textKey]}</a>)
+						}.bind(this))
+					}
+				</div>
+			</div>
+		);
+	},
+
+	_onKeyUp: function (event) {
+		switch(event.keyCode) {
+			case 40 :
+				this._incrementSelected();
+				break;
+			case 38 :
+				this._decrementSelected();
+				break;
+			case 13 :
+				this._pickSelected();
+				break;
+		}
+	},
+
+	_onChange: function (event) {
+		var s = this.state,
+			flux = this.getFlux(),
+			val = event.target.value;
+		s.fragment = val;
+		this.setState(s);
+		flux.actions[this.props.actionKey](val);
+	},
+
+	_pickSelected: function () {
+		var s = this.state;
+		var selected = this.props.options[s.selectedIndex];
+		if (selected) {
+			s.fragment = selected[this.props.textKey];
+			s.options = [];
+			this.setState(s);
+			this.props.onSelected(selected)
+		}
+	},
+
+	_incrementSelected: function() {
+		var s = this.state;
+		if(s.selectedIndex < s.options.length - 1) {
+			s.selectedIndex++;	
+			this.setState(s);
+		}			
+	},
+
+	_decrementSelected: function () {
+		var s = this.state;
+		if(s.selectedIndex > 0){
+			s.selectedIndex--;	
+			this.setState(s);
+		}	
+	},
+
+});
+
+module.exports = AutoComplete;

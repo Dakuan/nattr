@@ -7,6 +7,7 @@ var express = require('express'),
     UsersStore = require('../../stores/users-store'),
     UserSessionStore = require('../../stores/user-session-store'),
     RouteStore = require('../../stores/route-store'),
+    TwitterStore = require('../../stores/twitter-store'),
     componentLoader = require('../util/component-loader'),
     component = componentLoader('app'),
     root = express.Router();
@@ -24,7 +25,8 @@ root.get('/', function (req, res, next) {
             routeStore: new RouteStore({
                 path: '/'
             }),
-            usersStore: new UsersStore()
+            usersStore: new UsersStore(),
+            twitterStore: new TwitterStore()
         }, require('../../actions/actions')),
 
             html = React.renderComponentToString(component({
@@ -46,7 +48,27 @@ root.get('/login', function (req, res, next) {
         routeStore: new RouteStore({
             path: '/login'
         }),
-        usersStore: new UsersStore()
+        usersStore: new UsersStore(),
+        twitterStore: new TwitterStore()
+    }, require('../../actions/actions')),
+        html = React.renderComponentToString(component({
+            flux: flux
+        }));
+    res.render('index', {
+        html: html
+    });
+});
+
+root.get('/admin', function (req, res, next) {
+    // Fire up flux
+    var flux = new Fluxxor.Flux({
+        updateStore: new UpdateStore(),
+        userSessionStore: new UserSessionStore(),
+        routeStore: new RouteStore({
+            path: '/admin'
+        }),
+        usersStore: new UsersStore(),
+        twitterStore: new TwitterStore()
     }, require('../../actions/actions')),
         html = React.renderComponentToString(component({
             flux: flux

@@ -10,6 +10,7 @@ var React = require('react'),
     UserSessionStore = require('../stores/user-session-store'),
     RouteStore = require('../stores/route-store'),
     UsersStore = require('../stores/users-store'),
+    TwitterStore = require('../stores/twitter-store'),
     cookieParser = require('cookie-parser'),
     _ = require('underscore'),
     Nattr = require('../ui/app');
@@ -30,7 +31,8 @@ var flux = new Fluxxor.Flux({
     }),
     usersStore: new UsersStore({
         users: [user]
-    })
+    }),
+    twitterStore: new TwitterStore()
 }, require('../actions/actions'));
 
 // Sockets
