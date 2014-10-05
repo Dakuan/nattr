@@ -7,6 +7,7 @@ var Fluxxor = require('fluxxor'),
             this._resetQuery();
             this.bindActions(TwitterActionTypes.SEARCH_USER, '_onUserSearch');
             this.bindActions(TwitterActionTypes.FOLLOW_USER, '_onUserFollow');
+            this.bindActions(TwitterActionTypes.RESET_QUERY, '_onResetQuery');
         },
 
         getQuery: function () {
@@ -15,9 +16,14 @@ var Fluxxor = require('fluxxor'),
 
         _resetQuery: function () {
             this._query = {
+                fragment: '',
                 users: []
             };
             this.emit('change');
+        },
+
+        _onResetQuery: function () {
+            this._resetQuery();
         },
 
         _onUserFollow: function (user) {
@@ -33,8 +39,10 @@ var Fluxxor = require('fluxxor'),
         _onUserSearch: function (fragment) {
 
             if (fragment === '') {
-                this._resetQuery();                
+                this._resetQuery();
             } else {
+                this._query.fragment = fragment;
+                this.emit('change');
                 if (this._userSearchXhr) {
                     this._userSearchXhr.abort();
                     this._userSearchXhr = false;

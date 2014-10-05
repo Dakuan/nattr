@@ -36,38 +36,45 @@ var AdminScreen = React.createClass({
 
 	render: function() {
 
-		var cx = React.addons.classSet;
-		var classes = cx({
-			'btn': true,
-			'btn-follow': true,
+		var cx = React.addons.classSet,
+			classes = cx({
+			'btn btn-follow': true,
 			'disabled': !this.state.selectedTwitterUser
 		});
 
 		return (
 			<div className="admin-screen-container container">				
 				<h1>Admin</h1>
-				<div className="col-md-3">				
-					<AutoComplete onSelected={this._onSelected} actionKey="userSearch" options={this.state.twitterUserQuery.users} textKey="screen_name" />
+				<div className="row">
+					<div className="col-sm-9">				
+						<AutoComplete value={this.state.twitterUserQuery.fragment} 
+							onSelected={this._onSelected}
+							onChange={this._onChange} 
+							actionKey="userSearch"
+							options={this.state.twitterUserQuery.users} 
+							textKey="screen_name" 
+						/>
+					</div>
+					<div className="col-sm-3">
+						<a href="#" onClick={this._onClick} className={classes}>Follow</a>					
+					</div>
 				</div>
-				<div>
-					<a href="#" onClick={this._onClick} className={classes}>Follow</a>
+				<div className="row">
 				</div>
-				<p>some things</p>
 			</div>
 		);
 	},
 
 	_onSelected: function (user) {
-		var s = this.state;
+		var s = this.state,
+			flux = this.getFlux();
 		s.selectedTwitterUser = user;
-		s.twitterUserQuery = {
-			users: []
-		};
 		this.setState(s);
 	},
 
 	_onClick: function() {
 		this.getFlux().actions.followUser(this.state.selectedTwitterUser);
+		this.getFlux().actions.resetTwitterUserQuery();
 	},
 
 	_onTwitterStoreChange: function() {

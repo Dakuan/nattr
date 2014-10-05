@@ -27,8 +27,9 @@ var AutoComplete = React.createClass({
 		});
 		return (
 			<div className="autocomplete" onKeyUp={this._onKeyUp}>
-				<div className="form-group">
-					<input className="form-control" onFocus={this._onFocus} onBlur={this._onBlur} onChange={this._onChange} value={this.state.fragment} />
+				<div className="input-group">
+					<span className="input-group-addon">@</span>
+					<input placeholder="twitter handle..." className="form-control" onFocus={this._onFocus} onBlur={this._onBlur} onChange={this._onChange} value={this.props.value} />
 				</div>
 				<div className={classes}>
 					{
@@ -77,9 +78,10 @@ var AutoComplete = React.createClass({
 	},
 
 	_pickSelected: function () {
-		var s = this.state;
-		var selected = this.props.options[s.selectedIndex];
+		var s = this.state,
+			selected = this.props.options[s.selectedIndex];
 		if (selected) {
+			s.hidden = true;
 			s.fragment = selected[this.props.textKey];
 			s.options = [];
 			this.setState(s);
