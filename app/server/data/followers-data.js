@@ -53,7 +53,7 @@ Following.prototype.unFollow = function (id) {
                 deferred.reject(err);
                 return;
             }
-            deferred.resolve({});
+            deferred.resolve(user);
         });
     });
 
@@ -62,7 +62,6 @@ Following.prototype.unFollow = function (id) {
 
 Following.prototype.findAll = function (done) {
     var deferred = Q.defer();
-
     MongoClient.connect(CONFIG.get('mongo_url'), function (err, db) {
         if (err) {
             deferred.reject(err);

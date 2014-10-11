@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test",
+    "test": "gulp test && mocha integration --recursive",
     "build": "STATIC_ROOT=./static NODE_ENV=production browserify ./app/client/app.js  --extension=.react  --extension=.js | uglifyjs -cm > build/js/app.js && gulp less && jsx -x react ./app/ui/ ./build/server/ui && gulp server-js",
     "postinstall": "npm run build"
   },
@@ -59,7 +59,8 @@
     "gulp-plumber": "^0.6.5",
     "gulp-jest": "^0.2.1",
     "uglify-js": "^2.3.6",
-    "route-recognizer": "^0.1.0"
+    "route-recognizer": "^0.1.0",
+    "mocha": "^1.21.5"
   },
   "browserify": {
     "transform": [
