@@ -15,7 +15,7 @@ var AutoComplete = React.createClass({
 		return {
 			fragment: '',
 			selectedIndex: 0,
-			hidden: this.props.options.length > 0 
+			hidden: this.props.options.length > 0,
 		};
 	},
 
@@ -23,14 +23,19 @@ var AutoComplete = React.createClass({
 		var cx = React.addons.classSet,
 			classes = cx({
 			'dropdown list-group': true,
-			'hidden': this.state.hidden
-		});
+			'hidden': this.state.hidden,
+		}),
+			loadingClasses = cx({
+				'loading fa fa-spinner': true,
+				'hidden': !this.props.loading
+			});
 		return (
 			<div className="autocomplete" onKeyUp={this._onKeyUp}>
 				<div className="input-group">
 					<span className="input-group-addon">@</span>
-					<input placeholder="twitter handle..." className="form-control" onFocus={this._onFocus} onBlur={this._onBlur} onChange={this._onChange} value={this.props.value} />
+					<input placeholder="twitter handle..." className="form-control" onFocus={this._onFocus} onBlur={this._onBlur} onChange={this._onChange} value={this.props.value} />										
 				</div>
+				<i className={loadingClasses}></i>
 				<div className={classes}>
 					{
 						this.props.options.map(function(opt, index) {
@@ -72,7 +77,6 @@ var AutoComplete = React.createClass({
 		var s = this.state,
 			flux = this.getFlux(),
 			val = event.target.value;
-		s.fragment = val;
 		if (val === '') {
 			s.selectedIndex = 0;
 		}

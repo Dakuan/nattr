@@ -21,7 +21,9 @@ var Fluxxor = require('fluxxor'),
         },
 
         _resetQuery: function () {
+            this._abortSearch();
             this._query = {
+                loading: false,
                 fragment: '',
                 users: []
             };
@@ -29,7 +31,7 @@ var Fluxxor = require('fluxxor'),
         },
 
         _onResetQuery: function () {
-            this._resetQuery();
+            this._resetQuery();            
         },
 
         _onUserUnFollow: function (id) {
@@ -67,17 +69,22 @@ var Fluxxor = require('fluxxor'),
             }.bind(this));
         },
 
+        _abortSearch: function () {
+            if (this._userSearchXhr) {
+                this._userSearchXhr.abort();
+                this._userSearchXhr = false;
+            }
+        },
+
         _onUserSearch: function (fragment) {
 
             if (fragment === '') {
                 this._resetQuery();
             } else {
                 this._query.fragment = fragment;
+                this._query.loading = true;
+                this._abortSearch();
                 this.emit('change');
-                if (this._userSearchXhr) {
-                    this._userSearchXhr.abort();
-                    this._userSearchXhr = false;
-                }
                 this._userSearchXhr = xhr({
                     uri: "/api/twitter/users/search?name=" + fragment
                 }, function (err, resp, body) {
@@ -85,7 +92,8 @@ var Fluxxor = require('fluxxor'),
                         var result = JSON.parse(body);
                         this._query = {
                             fragment: fragment,
-                            users: result
+                            users: result,
+                            loading: false
                         };
                         this._userSearchXhr = false;
                         this.emit('change');

@@ -58,12 +58,14 @@ var AdminScreen = React.createClass({
 				</div>
 				<div className="row">
 					<div className="col-sm-4">				
-						<AutoComplete value={this.state.twitterUserQuery.fragment} 
+						<AutoComplete 
 							onSelected={this._onSelected}
 							onChange={this._onChange} 
-							actionKey="userSearch"
+							actionKey="userSearch"							
+							textKey="screen_name"
+							value={this.state.twitterUserQuery.fragment} 
 							options={this.state.twitterUserQuery.users} 
-							textKey="screen_name" 
+							loading={this.state.twitterUserQuery.loading} 
 						/>
 					</div>
 					<div className="col-sm-2">
