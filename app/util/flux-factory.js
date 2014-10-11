@@ -10,18 +10,10 @@ module.exports = function (opts) {
     // Fire up flux
     var flux = new Fluxxor.Flux({
         updateStore: new UpdateStore(),
-        userSessionStore: new UserSessionStore({
-            user: opts.user
-        }),
-        routeStore: new RouteStore({
-            path: opts.path
-        }),
-        usersStore: new UsersStore({
-            users: opts.users
-        }),
-        twitterStore: new TwitterStore({
-            following: opts.following
-        })
+        userSessionStore: new UserSessionStore(opts),
+        routeStore: new RouteStore(opts),
+        usersStore: new UsersStore(opts),
+        twitterStore: new TwitterStore(opts)
     }, require('../actions/actions'));
 
     return flux

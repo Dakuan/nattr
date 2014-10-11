@@ -1,8 +1,8 @@
 var express = require('express'),
     twitter = require('twitter'),
-    _ = require('underscore'),
     Following = require('../../data/followers-data'),
     CONFIG = require('../../config/config'),
+    basicAuth = require('../../middleware/basic-auth'),
     root = express.Router();
 
 var twit = new twitter({
@@ -11,6 +11,8 @@ var twit = new twitter({
     access_token_key: CONFIG.get('twitter_token'),
     access_token_secret: CONFIG.get('twitter_token_secret')
 });
+
+root.use(basicAuth);
 
 root.get('/users/following', function (req, res, next) {
     Following.findAll().then(function (following) {

@@ -7,7 +7,9 @@ var express = require('express'),
     component = componentLoader('app'),
     root = express.Router();
 
-root.get('/', basicAuth, function (req, res, next) {
+root.use(basicAuth);
+
+root.get('/', function (req, res, next) {
     Following.findAll().then(function (following) {
         // Fire up flux
         var flux = fluxFactory({
