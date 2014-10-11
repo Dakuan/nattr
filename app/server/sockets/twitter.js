@@ -8,13 +8,31 @@ var Twitter = require('node-tweet-stream'),
         token_secret: CONFIG.get('twitter_token_secret')
     });
 
-t.track('pizza');
-t.follow('8820362');
+module.exports = function (io, following) {
 
-module.exports = function (io) {
-    t.on('tweet', _.throttle(function (tweet) {
+    function _follow() {
+        following.findAll().then(function (users) {
+            _.chain(users)
+                .pluck('id')
+                .each(function (id) {
+                    t.follow(id);
+                });
+        });
+    }
+
+    var emit = _.throttle(function (tweet) {
         io.emit('tweet', tweet);
-    }, 5000));
+    });
+
+    following.on('change', _follow);
+
+    _follow();
+    
+    t.on('tweet', function (tweet) {
+        if (tweet.retweeted_status) {} else {
+            emit(tweet);
+        }
+    });
 
     t.on('error', function (err) {
         console.log('Oh no');

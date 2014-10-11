@@ -16,6 +16,7 @@ A chat application that interlaces social media feeds.
 
 Currently there is nothing other than Javascript in this application so our depenecy list is rather short:
 * nodejs
+* mongodb
 
 ### Getting started
 Once node is installed, all we need are the dependencies and the gulp CLI
@@ -35,7 +36,9 @@ You will need to add a `secret.json` file to the [config folder](https://github.
     "twitter_consumer_key": "KEY",
     "twitter_consumer_secret": "KEY_SECRET",
     "twitter_token": "TOKEN",
-    "twitter_token_secret": "TOKEN_SECRET"
+    "twitter_token_secret": "TOKEN_SECRET",
+    "admin_user_name": "ADMIN_USER_NAME",
+    "admin_user_password": "ADMIN_USER_PASSWORD",
 }
 
 ```

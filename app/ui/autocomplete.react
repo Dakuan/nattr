@@ -1,0 +1,117 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react/addons'),
+	Fluxxor = require('fluxxor'),
+	_ = require('underscore'),
+	FluxChildMixin = Fluxxor.FluxChildMixin(React);
+
+var AutoComplete = React.createClass({
+
+	mixins: [FluxChildMixin],
+
+	getInitialState: function() {
+		return {
+			fragment: '',
+			selectedIndex: 0,
+			hidden: this.props.options.length > 0,
+		};
+	},
+
+	render: function() {
+		var cx = React.addons.classSet,
+			classes = cx({
+			'dropdown list-group': true,
+			'hidden': this.state.hidden,
+		}),
+			loadingClasses = cx({
+				'loading fa fa-spinner': true,
+				'hidden': !this.props.loading
+			});
+		return (
+			<div className="autocomplete" onKeyUp={this._onKeyUp}>
+				<div className="input-group">
+					<span className="input-group-addon">@</span>
+					<input placeholder="twitter handle..." className="form-control" onFocus={this._onFocus} onBlur={this._onBlur} onChange={this._onChange} value={this.props.value} />										
+				</div>
+				<i className={loadingClasses}></i>
+				<div className={classes}>
+					{
+						this.props.options.map(function(opt, index) {
+							return (<a key={index} className={ index === this.state.selectedIndex ? "list-group-item active" : "list-group-item"}>{opt[this.props.textKey]}</a>)
+						}.bind(this))
+					}
+				</div>
+			</div>
+		);
+	},
+
+	_onKeyUp: function (event) {
+		switch(event.keyCode) {
+			case 40 :
+				this._incrementSelected();
+				break;
+			case 38 :
+				this._decrementSelected();
+				break;
+			case 13 :
+				this._pickSelected();
+				break;
+		}
+	},
+
+	_onBlur: function () {
+		var s = this.state;
+		s.hidden = true;
+		this.setState(s);
+	},
+
+	_onFocus: function () {
+		var s = this.state;
+		s.hidden = false;
+		this.setState(s);
+	},
+
+	_onChange: function (event) {
+		var s = this.state,
+			flux = this.getFlux(),
+			val = event.target.value;
+		if (val === '') {
+			s.selectedIndex = 0;
+		}
+		this.setState(s);
+		flux.actions[this.props.actionKey](val);
+	},
+
+	_pickSelected: function () {
+		var s = this.state,
+			selected = this.props.options[s.selectedIndex];
+		if (selected) {
+			s.hidden = true;
+			s.fragment = selected[this.props.textKey];
+			s.options = [];
+			this.setState(s);
+			this.props.onSelected(selected)
+		}
+	},
+
+	_incrementSelected: function() {
+		var s = this.state;
+		if(s.selectedIndex < this.props.options.length - 1) {
+			s.selectedIndex++;	
+			this.setState(s);
+		}			
+	},
+
+	_decrementSelected: function () {
+		var s = this.state;
+		if(s.selectedIndex > 0){
+			s.selectedIndex--;	
+			this.setState(s);
+		}	
+	},
+
+});
+
+module.exports = AutoComplete;

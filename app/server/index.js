@@ -7,6 +7,8 @@ var express = require('express'),
     passport = require('passport'),
     session = require('express-session'),
     mongoose = require('mongoose'),
+    bodyParser = require('body-parser'),
+    following = require('./data/followers-data'),
     MongoStore = require('connect-mongo')(session),
     path = require('path');
 
@@ -35,14 +37,20 @@ app.use(session({
     resave: true
 }));
 
+// Parse JSON
+app.use(bodyParser.json());
+
 // Login
 require('./auth/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use('/', require('./routes/root'));
-app.use('/auth', require('./routes/auth'));
+app.use('/', require('./routes/app/root'));
+app.use('/login', require('./routes/app/login'));
+app.use('/admin', require('./routes/app/admin'));
+app.use('/auth', require('./routes/app/auth'));
+app.use('/api/twitter', require('./routes/api/twitter'));
 
 // Assets
 app.use('/public/images', express.static(path.join(__dirname, '../public/images')));
@@ -56,7 +64,7 @@ app.set('views', __dirname + '/views');
 
 // Sockets
 require('./sockets/index')(io);
-require('./sockets/twitter')(io);
+require('./sockets/twitter')(io, following);
 
 // Go!
 http.listen(process.env.PORT || 3000, function () {

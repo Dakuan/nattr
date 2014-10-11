@@ -1,0 +1,55 @@
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+
+.autocomplete {
+    position: relative;
+
+    .dropdown {
+        position: absolute;
+    	margin-left: 38px;
+        z-index: 1000;
+
+    	.list-group-item {
+
+            @fade: 95%;
+            background-color: fade(white, @fade);
+
+            &.active {
+                background-color: fade(@brand-primary, @fade);
+            }
+
+    		&:first-child {
+                border-top-right-radius: 0;
+    			border-top-left-radius: 0;
+    		}
+    	}	
+
+        &.hidden {
+            display: none;
+        }
+    }
+
+    .loading {
+        float: right;
+        margin-top: -34px;
+        z-index: 1000000000;
+        position: relative;
+        padding: 10px;
+        margin-right: -4px;
+        @speed: 2s;
+        transition: opacity .25s;
+        opacity: 0.3;
+        -webkit-animation: spin @speed linear infinite;
+        -moz-animation: spin @speed linear infinite;
+        animation: spin @speed linear infinite;
+        
+        &.hidden {
+            display: block!important;
+            visibility: visible!important;
+            opacity: 0;
+        }
+    }
+}

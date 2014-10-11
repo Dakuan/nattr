@@ -9,4 +9,9 @@ root.get('/twitter/callback', passport.authenticate('twitter', {
     failureRedirect: '/login'
 }));
 
+root.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/login');
+});
+
 module.exports = root;

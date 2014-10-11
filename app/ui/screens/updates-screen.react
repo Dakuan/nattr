@@ -27,7 +27,7 @@ var UpdatesScreen = React.createClass({
 			<div className="update-screen-container">
 				<header>
 					<h1>nattr</h1>
-					<a href="/logout" className="logout"><i className="fa fa-sign-out"></i></a>
+					<a href="/auth/logout" className="logout"><i className="fa fa-sign-out"></i></a>
 				</header>
 				<div className="row" style={{'min-height': '100%', height: '100%'}}>	
 					<UsersList users={this.state.users} />
