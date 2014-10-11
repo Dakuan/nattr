@@ -20,7 +20,9 @@ var FollowingTable = React.createClass({
 					{this.props.following.map(function(u) {
 						return (
 							<tr key={u.id}>
-								<td>{u.screen_name}</td>
+								<td>
+									<a href={'http://twitter.com/' + u.screen_name} target="_blank">{'@' + u.screen_name}</a>
+								</td>
 								<td>{u.name}</td>
 								<td>
 									<a onClick={this.props.unfollowClick} 
