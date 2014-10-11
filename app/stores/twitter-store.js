@@ -3,11 +3,17 @@ var Fluxxor = require('fluxxor'),
     TwitterActionTypes = require('../constants/twitter-action-types'),
     TwitterStore = Fluxxor.createStore({
 
-        initialize: function () {
+        initialize: function (options) {
             this._resetQuery();
+            this._following = options.following || [];
             this.bindActions(TwitterActionTypes.SEARCH_USER, '_onUserSearch');
             this.bindActions(TwitterActionTypes.FOLLOW_USER, '_onUserFollow');
+            this.bindActions(TwitterActionTypes.UNFOLLOW_USER, '_onUserUnFollow');
             this.bindActions(TwitterActionTypes.RESET_QUERY, '_onResetQuery');
+        },
+
+        getFollowing: function () {
+            return this._following;
         },
 
         getQuery: function () {
@@ -26,14 +32,39 @@ var Fluxxor = require('fluxxor'),
             this._resetQuery();
         },
 
+        _onUserUnFollow: function (id) {
+            xhr({
+                uri: '/api/twitter/users/following/' + id,
+                method: 'DELETE'
+            }, function () {
+                this._syncFollowing();
+            }.bind(this));
+        },
+
         _onUserFollow: function (user) {
             xhr({
-                uri: '/api/twitter/user/follow',
+                uri: '/api/twitter/users/following',
                 method: 'POST',
                 json: user
-            }, function () {
-                console.log(arguments);
-            });
+            }, function (err, resp) {
+                if (err) {
+
+                } else {
+                    this._syncFollowing();
+                }
+            }.bind(this));
+        },
+
+        _syncFollowing: function () {
+            xhr({
+                uri: '/api/twitter/users/following',
+                json: true
+            }, function (err, resp, following) {
+                if (err) {} else {
+                    this._following = following;
+                    this.emit('change');
+                }
+            }.bind(this));
         },
 
         _onUserSearch: function (fragment) {
@@ -48,7 +79,7 @@ var Fluxxor = require('fluxxor'),
                     this._userSearchXhr = false;
                 }
                 this._userSearchXhr = xhr({
-                    uri: "/api/twitter/user/search?name=" + fragment
+                    uri: "/api/twitter/users/search?name=" + fragment
                 }, function (err, resp, body) {
                     if (body) {
                         var result = JSON.parse(body);

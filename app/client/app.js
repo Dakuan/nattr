@@ -32,7 +32,9 @@ var flux = new Fluxxor.Flux({
     usersStore: new UsersStore({
         users: [user]
     }),
-    twitterStore: new TwitterStore()
+    twitterStore: new TwitterStore({
+        following: window._nrBlob.following
+    })
 }, require('../actions/actions'));
 
 // Sockets

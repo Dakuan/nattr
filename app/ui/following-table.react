@@ -1,0 +1,40 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+
+var FollowingTable = React.createClass({
+
+	render: function() {
+		return (
+			<table className="table table-striped">
+				<thead>
+					<tr>
+						<th>Handle</th>
+						<th>Name</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.props.following.map(function(u) {
+						return (
+							<tr key={u.id}>
+								<td>{u.screen_name}</td>
+								<td>{u.name}</td>
+								<td>
+									<a onClick={this.props.unfollowClick} 
+										className="btn btn-unfollow"
+										data-id={u.id} 
+										href="#">Unfollow</a>
+								</td>
+							</tr>
+						)
+					}.bind(this))}
+				</tbody>
+			</table>
+		);
+	}
+});
+
+module.exports = FollowingTable;

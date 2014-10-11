@@ -12,17 +12,29 @@ var twit = new twitter({
     access_token_secret: CONFIG.get('twitter_token_secret')
 });
 
-root.get('/user/search', function (req, res, next) {
+root.get('/users/following', function (req, res, next) {
+    Following.findAll().then(function (following) {
+        res.json(following);
+    });
+});
+
+root.get('/users/search', function (req, res, next) {
     var fragment = req.query.name;
     twit.searchUser(fragment, {}, function (users) {
         res.json(users);
     });
 });
 
-root.post('/user/follow', function (req, res, next) {
+root.post('/users/following', function (req, res, next) {
     var user = req.body;
     Following.follow(user).then(function (docs) {
         res.json(docs);
+    });
+});
+
+root.delete('/users/following/:id', function (req, res, next) {
+    Following.unFollow(req.params.id).then(function (user) {
+        res.json(user);
     });
 });
 

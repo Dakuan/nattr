@@ -1,3 +1,3 @@
 var en = require('constant-enum');
 
-module.exports = en('SEARCH_USER', 'FOLLOW_USER', 'RESET_QUERY');
+module.exports = en('SEARCH_USER', 'FOLLOW_USER', 'RESET_QUERY', 'UNFOLLOW_USER');

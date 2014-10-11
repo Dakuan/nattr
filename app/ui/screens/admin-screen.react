@@ -6,6 +6,7 @@ var React = require('react/addons'),
 	Fluxxor = require('fluxxor'),
 	FluxChildMixin = Fluxxor.FluxChildMixin(React),
 	_ = require('underscore'),
+	FollowingTable = require('../following-table');
 	AutoComplete = require('../autocomplete');
 
 var AdminScreen = React.createClass({
@@ -13,7 +14,9 @@ var AdminScreen = React.createClass({
 	mixins: [FluxChildMixin],
 
 	getInitialState: function() {
+		var flux = this.getFlux();
 		return {
+			following: flux.stores.twitterStore.getFollowing(),
 			selectedTwitterUser: false,
 			twitterUserQuery: {
 				fragment: '',
@@ -43,10 +46,18 @@ var AdminScreen = React.createClass({
 		});
 
 		return (
-			<div className="admin-screen-container container">				
-				<h1>Admin</h1>
+			<div className="admin-screen-container container">
+				<div className="page-header">				
+					<h1>Admin</h1>
+				</div>
 				<div className="row">
-					<div className="col-sm-9">				
+					<div className="col-sm-12">
+						<h2>Following</h2>
+						<p>These are twitter feeds that get interlaced with nattr chat</p>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-sm-4">				
 						<AutoComplete value={this.state.twitterUserQuery.fragment} 
 							onSelected={this._onSelected}
 							onChange={this._onChange} 
@@ -55,26 +66,42 @@ var AdminScreen = React.createClass({
 							textKey="screen_name" 
 						/>
 					</div>
-					<div className="col-sm-3">
-						<a href="#" onClick={this._onClick} className={classes}>Follow</a>					
+					<div className="col-sm-2">
+						<a href="#" 
+							onClick={this._onClick} 
+							className={classes}>Follow</a>					
 					</div>
 				</div>
 				<div className="row">
+					<div className="col-sm-12">
+						<FollowingTable 
+							unfollowClick={this._unfollowClick}
+							following={this.state.following} />
+					</div>
 				</div>
 			</div>
 		);
+	},
+
+	_unfollowClick: function (event) {
+		this.getFlux().actions.unfollowUser(event.target.dataset.id);
 	},
 
 	_onSelected: function (user) {
 		var s = this.state,
 			flux = this.getFlux();
 		s.selectedTwitterUser = user;
+		s.twitterUserQuery.fragment = user.screen_name;
+		s.twitterUserQuery.options = [];
 		this.setState(s);
 	},
 
 	_onClick: function() {
 		this.getFlux().actions.followUser(this.state.selectedTwitterUser);
 		this.getFlux().actions.resetTwitterUserQuery();
+		var s = this.state;
+		s.selectedTwitterUser = null;
+		this.setState(s)
 	},
 
 	_onTwitterStoreChange: function() {
@@ -82,7 +109,8 @@ var AdminScreen = React.createClass({
 			store = flux.stores.twitterStore,
 			q = store.getQuery(),
 			s = this.state;
-		q.users = _(q.users).first(5);			
+		q.users = _(q.users).first(5);
+		s.following = store.getFollowing();			
 		s.twitterUserQuery = q;
 		this.setState(s);
 	}

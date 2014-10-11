@@ -1,7 +1,9 @@
 var express = require('express'),
     _ = require('underscore'),
     React = require('react'),
+    basicAuth = require('../middleware/basic-auth'),
     Fluxxor = require('fluxxor'),
+    Following = require('../data/followers-data'),
     CONFIG = require('../config/config'),
     UpdateStore = require('../../stores/update-store'),
     UsersStore = require('../../stores/users-store'),
@@ -59,22 +61,31 @@ root.get('/login', function (req, res, next) {
     });
 });
 
-root.get('/admin', function (req, res, next) {
-    // Fire up flux
-    var flux = new Fluxxor.Flux({
-        updateStore: new UpdateStore(),
-        userSessionStore: new UserSessionStore(),
-        routeStore: new RouteStore({
-            path: '/admin'
-        }),
-        usersStore: new UsersStore(),
-        twitterStore: new TwitterStore()
-    }, require('../../actions/actions')),
-        html = React.renderComponentToString(component({
-            flux: flux
-        }));
-    res.render('index', {
-        html: html
+root.get('/admin', basicAuth, function (req, res, next) {
+    Following.findAll().then(function (following) {
+        // Fire up flux
+        var flux = new Fluxxor.Flux({
+            updateStore: new UpdateStore(),
+            userSessionStore: new UserSessionStore(),
+            routeStore: new RouteStore({
+                path: '/admin'
+            }),
+            usersStore: new UsersStore(),
+            twitterStore: new TwitterStore({
+                following: following
+            })
+        }, require('../../actions/actions')),
+            html = React.renderComponentToString(component({
+                flux: flux
+            }));
+        res.render('index', {
+            html: html,
+            blob: JSON.stringify({
+                following: following
+            })
+        });
+    }).catch(function (err) {
+        throw err;
     });
 });
 

@@ -31,6 +31,29 @@ Following.prototype.follow = function (user) {
             }
             self.emit('change');
             deferred.resolve(docs);
+            db.close();
+        });
+    });
+
+    return deferred.promise;
+};
+
+Following.prototype.unFollow = function (id) {
+    var self = this,
+        deferred = Q.defer();
+
+    MongoClient.connect(CONFIG.get('mongo_url'), function (err, db) {
+        var collection = db.collection('following');
+        collection.remove({
+            id_str: id
+        }, {
+            remove: true
+        }, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+                return;
+            }
+            deferred.resolve({});
         });
     });
 
@@ -47,7 +70,7 @@ Following.prototype.findAll = function (done) {
         }
 
         var collection = db.collection('following');
-        
+
         collection.find().toArray(function (err, data) {
             if (err) {
                 deferred.reject(err);

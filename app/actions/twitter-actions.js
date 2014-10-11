@@ -4,9 +4,12 @@ module.exports = {
         this.dispatch(TwitterActionTypes.SEARCH_USER, fragment);
     },
     followUser: function (user) {
-    	this.dispatch(TwitterActionTypes.FOLLOW_USER, user);
+        this.dispatch(TwitterActionTypes.FOLLOW_USER, user);
     },
-    resetTwitterUserQuery: function (){
-    	this.dispatch(TwitterActionTypes.RESET_QUERY);
+    unfollowUser: function (id) {
+        this.dispatch(TwitterActionTypes.UNFOLLOW_USER, id);
+    },
+    resetTwitterUserQuery: function () {
+        this.dispatch(TwitterActionTypes.RESET_QUERY);
     }
 };

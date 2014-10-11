@@ -73,6 +73,9 @@ var AutoComplete = React.createClass({
 			flux = this.getFlux(),
 			val = event.target.value;
 		s.fragment = val;
+		if (val === '') {
+			s.selectedIndex = 0;
+		}
 		this.setState(s);
 		flux.actions[this.props.actionKey](val);
 	},
@@ -91,7 +94,7 @@ var AutoComplete = React.createClass({
 
 	_incrementSelected: function() {
 		var s = this.state;
-		if(s.selectedIndex < s.options.length - 1) {
+		if(s.selectedIndex < this.props.options.length - 1) {
 			s.selectedIndex++;	
 			this.setState(s);
 		}			
