@@ -46,8 +46,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use('/', require('./routes/root'));
-app.use('/auth', require('./routes/auth'));
+app.use('/', require('./routes/app/root'));
+app.use('/login', require('./routes/app/login'));
+app.use('/admin', require('./routes/app/admin'));
+app.use('/auth', require('./routes/app/auth'));
 app.use('/api/twitter', require('./routes/api/twitter'));
 
 // Assets
