@@ -1,8 +1,11 @@
 language: node_js
 node_js:
 - 0.10.26
-notifications:
-  hipchat: 713f63621f441fc7e38c9e40107553@270461
+services:
+  - mongodb
+cache:
+  directories:
+    - node_modules
 before_script:
 - npm install -g gulp
 script:

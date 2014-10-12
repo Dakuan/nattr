@@ -22,21 +22,33 @@ root.get('/users/following', function (req, res, next) {
 
 root.get('/users/search', function (req, res, next) {
     var fragment = req.query.name;
-    twit.searchUser(fragment, {}, function (users) {
-        res.json(users);
-    });
+    if (fragment) {
+        twit.searchUser(fragment, {}, function (users) {
+            res.json(users);
+        });
+    } else {
+        res.status(400);
+        res.end();
+    }
 });
 
 root.post('/users/following', function (req, res, next) {
     var user = req.body;
     Following.follow(user).then(function (docs) {
+        res.status(201);
         res.json(docs);
     });
 });
 
 root.delete('/users/following/:id', function (req, res, next) {
     Following.unFollow(req.params.id).then(function (user) {
-        res.json(user);
+        if (user) {
+            res.status(204);
+        } else {
+            res.status(404);
+        }
+
+        res.end();
     });
 });
 

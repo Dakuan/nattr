@@ -6,6 +6,8 @@ var gulp = require('gulp'),
     server = require('gulp-develop-server'),
     plumber = require('gulp-plumber'),
     base64 = require('gulp-base64'),
+    mocha = require('gulp-mocha'),
+    env = require('gulp-env'),
     jest = require('gulp-jest');
 
 var paths = {
@@ -14,7 +16,8 @@ var paths = {
     images: 'client/img/**/*',
     styleSheets: 'app/client/less/**/*.less',
     server: 'app/server/**/*',
-    tests: 'spec/**/*'
+    tests: 'spec/**/*',
+    integration: 'integration/**/*.js'
 };
 
 // default task
@@ -31,7 +34,7 @@ gulp.task('less', function () {
         .pipe(plumber())
         .pipe(less())
         .pipe(base64({
-            baseDir: './app'      
+            baseDir: './app'
         }))
         .pipe(gulp.dest('./build/css'));
 });
@@ -86,6 +89,24 @@ gulp.task('test', ['scripts'], function () {
             "react"
         ]
     }));
+});
+
+gulp.task('test-env', function () {
+    env({
+        file: 'app/server/config/test.json'
+    });
+});
+
+gulp.task('integration', ['test-env'], function () {
+    return gulp.src(paths.integration, {
+        read: false
+    })
+        .pipe(mocha({
+            reporter: 'nyan'
+        }))
+        .once('end', function () {
+            process.exit();
+        });;
 });
 
 // compile the react files so the server can render them

@@ -56,6 +56,7 @@ Room.prototype._onJoin = function (id) {
     return function (user) {
         this._connections[id].user = user;
         if (!this._haveUser(user._id)) {
+            console.log('no');
             this._users.push(user);
             this._connections[id].socket.broadcast.emit('user joined', user, this._users);
         }

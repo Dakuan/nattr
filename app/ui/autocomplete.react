@@ -22,9 +22,9 @@ var AutoComplete = React.createClass({
 	render: function() {
 		var cx = React.addons.classSet,
 			classes = cx({
-			'dropdown list-group': true,
-			'hidden': this.state.hidden,
-		}),
+				'dropdown list-group': true,
+				'hidden': this.state.hidden,
+			}),
 			loadingClasses = cx({
 				'loading fa fa-spinner': true,
 				'hidden': !this.props.loading
