@@ -1,12 +1,3 @@
-process.env.NODE_ENV = 'test';
-process.env.mongo_url = 'mongodb://localhost/nattr_test';
-process.env.admin_user_name = 'test_admin';
-process.env.admin_user_password = 'test_pass';
-process.env.twitter_consumer_key = "a";
-process.env.twitter_consumer_secret = "a";
-process.env.twitter_token = "a";
-process.env.twitter_token_secret = "a";
-
 var request = require('supertest'),
     MongoClient = require('mongodb').MongoClient,
     credentials = [process.env.admin_user_name, process.env.admin_user_password],

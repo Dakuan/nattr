@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     base64 = require('gulp-base64'),
     mocha = require('gulp-mocha'),
+    env = require('gulp-env'),
     jest = require('gulp-jest');
 
 var paths = {
@@ -90,7 +91,13 @@ gulp.task('test', ['scripts'], function () {
     }));
 });
 
-gulp.task('integration', function () {
+gulp.task('test-env', function () {
+    env({
+        file: 'app/server/config/test.json'
+    });
+});
+
+gulp.task('integration', ['test-env'], function () {
     return gulp.src(paths.integration, {
         read: false
     })

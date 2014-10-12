@@ -1,0 +1,10 @@
+{
+    "NODE_ENV": "test",
+    "mongo_url": "mongodb://localhost/nattr_test",
+    "admin_user_name": "test_admin",
+    "admin_user_password": "test_pass",
+    "twitter_consumer_key": "a",
+    "twitter_consumer_secret": "a",
+    "twitter_token": "a",
+    "twitter_token_secret": "a"
+}
