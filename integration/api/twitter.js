@@ -61,7 +61,6 @@ describe('/twitter', function () {
     });
 
     describe('DELETE /users/following/:id', function () {
-
         before(function (done) {
             MongoClient.connect(process.env.mongo_url, function (err, db) {
                 if (err) {
