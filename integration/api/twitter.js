@@ -75,17 +75,17 @@ describe('/twitter', function () {
             });
         });
 
+        it('should be authenticated', function (done) {
+            request(app)
+                .delete('/api/twitter/users/following/1')
+                .expect(401, done);
+        });
+
         it('should return 204', function (done) {
             request(app)
                 .delete('/api/twitter/users/following/1')
                 .auth('test_admin', 'test_pass')
                 .expect(204, done);
-        });
-
-        it('should be authenticated', function (done) {
-            request(app)
-                .delete('/api/twitter/users/following/1')
-                .expect(401, done);
         });
 
         describe('if there is no following user matching that id', function () {
