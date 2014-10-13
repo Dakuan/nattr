@@ -50,7 +50,7 @@
     "basic-auth": "^1.0.0",
     "cookie-signature": "^1.0.5",
     "cssstyle": "0.2.18",
-    "jsdom": "1.0.1"
+    "jsdom": "1.0.0"
   },
   "devDependencies": {
     "gulp": "^3.8.8",

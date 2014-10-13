@@ -6,7 +6,6 @@ services:
 cache:
   directories:
     - node_modules
-install: npm install --ignore-scripts
 before_script:
 - npm install -g gulp
 script:
