@@ -29,7 +29,7 @@ mongoose.connection.on('disconnected', connect);
 
 // Session
 app.use(session({
-    secret: 'rawr',
+    secret: CONFIG.get('session_secret'),
     saveUninitialized: true,
     store: new MongoStore({
         db: mongoose.connection.db,

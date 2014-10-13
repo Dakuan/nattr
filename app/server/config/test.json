@@ -6,5 +6,6 @@
     "twitter_consumer_key": "a",
     "twitter_consumer_secret": "a",
     "twitter_token": "a",
-    "twitter_token_secret": "a"
+    "twitter_token_secret": "a",
+    "session_secret": "test"
 }
