@@ -4,7 +4,7 @@
 
 var React = require('react/addons'),
 	Fluxxor = require('fluxxor'),
-	FluxChildMixin = Fluxxor.FluxChildMixin(React),
+	FluxChildMixin = Fluxxor.FluxMixin(React),
 	_ = require('underscore'),
 	FollowingTable = require('../following-table');
 	AutoComplete = require('../autocomplete');

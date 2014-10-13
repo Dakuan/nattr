@@ -5,6 +5,29 @@ var request = require('supertest'),
 
 describe('/twitter', function () {
 
+    before(function (done) {
+        MongoClient.connect(process.env.mongo_url, function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection('following').insert({
+                id_str: "1"
+            }, function () {
+                db.close();
+                done();
+            });
+        });
+    });
+
+    after(function (done) {
+        MongoClient.connect(process.env.mongo_url, function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection('following').drop(done);
+        });
+    });
+
     describe('GET /users/following', function () {
         it('should return 200', function (done) {
             request(app)
@@ -61,19 +84,7 @@ describe('/twitter', function () {
     });
 
     describe('DELETE /users/following/:id', function () {
-        before(function (done) {
-            MongoClient.connect(process.env.mongo_url, function (err, db) {
-                if (err) {
-                    throw err;
-                }
-                db.collection('following').insert({
-                    id_str: "1"
-                }, function () {
-                    db.close();
-                    done();
-                });
-            });
-        });
+
 
         it('should be authenticated', function (done) {
             request(app)

@@ -5,7 +5,7 @@
 var React = require('react/addons'),
 	Fluxxor = require('fluxxor'),
 	_ = require('underscore'),
-	FluxChildMixin = Fluxxor.FluxChildMixin(React);
+	FluxChildMixin = Fluxxor.FluxMixin(React);
 
 var AutoComplete = React.createClass({
 
