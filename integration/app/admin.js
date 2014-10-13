@@ -1,6 +1,5 @@
 var request = require('supertest'),
     cheerio = require('cheerio'),
-    cookie = require('cookie-signature'),
     MongoClient = require('mongodb').MongoClient,
     moment = require('moment'),
     app = require('../../app/server/app');
