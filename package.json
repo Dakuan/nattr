@@ -49,7 +49,8 @@
     "mongodb": "^1.4.18",
     "basic-auth": "^1.0.0",
     "cookie-signature": "^1.0.5",
-    "cssstyle": "0.2.18"
+    "cssstyle": "0.2.18",
+    "jsdom": "1.0.1"
   },
   "devDependencies": {
     "gulp": "^3.8.8",
