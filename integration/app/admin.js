@@ -1,7 +1,6 @@
 var request = require('supertest'),
     cheerio = require('cheerio'),
     MongoClient = require('mongodb').MongoClient,
-    moment = require('moment'),
     app = require('../../app/server/app');
 
 describe('GET /admin', function () {
