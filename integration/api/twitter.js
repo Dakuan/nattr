@@ -5,6 +5,15 @@ var request = require('supertest'),
 
 describe('/twitter', function () {
 
+    after(function (done) {
+        MongoClient.connect(process.env.mongo_url, function (err, db) {
+            if (err) {
+                throw err;
+            }
+            db.collection('following').drop(done);
+        });
+    });
+
     describe('GET /users/following', function () {
         it('should return 200', function (done) {
             request(app)
@@ -61,6 +70,7 @@ describe('/twitter', function () {
     });
 
     describe('DELETE /users/following/:id', function () {
+
         before(function (done) {
             MongoClient.connect(process.env.mongo_url, function (err, db) {
                 if (err) {
@@ -74,18 +84,17 @@ describe('/twitter', function () {
                 });
             });
         });
+        it('should be authenticated', function (done) {
+            request(app)
+                .delete('/api/twitter/users/following/1')
+                .expect(401, done);
+        });
 
         it('should return 204', function (done) {
             request(app)
                 .delete('/api/twitter/users/following/1')
                 .auth('test_admin', 'test_pass')
                 .expect(204, done);
-        });
-
-        it('should be authenticated', function (done) {
-            request(app)
-                .delete('/api/twitter/users/following/1')
-                .expect(401, done);
         });
 
         describe('if there is no following user matching that id', function () {

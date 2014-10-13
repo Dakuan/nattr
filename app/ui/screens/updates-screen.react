@@ -5,7 +5,7 @@
 var React = require('react'),
 	UpdateList = require('../update-list'),
 	Fluxxor = require('fluxxor'),
-	FluxChildMixin = Fluxxor.FluxChildMixin(React),
+	FluxChildMixin = Fluxxor.FluxMixin(React),
 	StoreWatchMixin = Fluxxor.StoreWatchMixin,
 	UsersList = require('../users-list'),
 	CreateUpdateForm = require('../create-update-form');
