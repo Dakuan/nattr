@@ -16,9 +16,10 @@ describe('/twitter', function () {
 
     describe('GET /users/following', function () {
         it('should return 200', function (done) {
-            request(app)
-                .get('/api/twitter/users/following')
-                .auth('test_admin', 'test_pass')
+
+            var res = request(app)
+                .get('/api/twitter/users/following');
+            res.auth.apply(res, credentials)
                 .expect(200, done);
         });
 
@@ -31,9 +32,9 @@ describe('/twitter', function () {
 
     describe('GET /users/search', function () {
         it('should return 200', function (done) {
-            request(app)
-                .get('/api/twitter/users/search?name=dom')
-                .auth('test_admin', 'test_pass')
+            var res = request(app)
+                .get('/api/twitter/users/search?name=dom');
+            res.auth.apply(res, credentials)
                 .expect(200, done);
         });
 
@@ -45,9 +46,9 @@ describe('/twitter', function () {
 
         describe('if there is no search fragment', function () {
             it('should return 400', function (done) {
-                request(app)
-                    .get('/api/twitter/users/search')
-                    .auth('test_admin', 'test_pass')
+                var res = request(app)
+                    .get('/api/twitter/users/search');
+                res.auth.apply(res, credentials)
                     .expect(400, done);
             });
         });
@@ -55,10 +56,10 @@ describe('/twitter', function () {
 
     describe('POST /users/following', function () {
         it('should return 201', function (done) {
-            request(app)
+            var res = request(app)
                 .post('/api/twitter/users/following')
-                .send({})
-                .auth('test_admin', 'test_pass')
+                .send({});
+            res.auth.apply(res, credentials)
                 .expect(201, done);
         });
 
@@ -91,17 +92,18 @@ describe('/twitter', function () {
         });
 
         it('should return 204', function (done) {
-            request(app)
-                .delete('/api/twitter/users/following/1')
-                .auth('test_admin', 'test_pass')
+            var res = request(app)
+                .delete('/api/twitter/users/following/1');
+            res.auth.apply(res, credentials)
                 .expect(204, done);
         });
 
         describe('if there is no following user matching that id', function () {
             it('should return 404', function (done) {
-                request(app)
-                    .delete('/api/twitter/users/following/666')
-                    .auth('test_admin', 'test_pass')
+
+                var res = request(app)
+                    .delete('/api/twitter/users/following/666');
+                res.auth.apply(res, credentials)
                     .expect(404, done);
             });
         });
