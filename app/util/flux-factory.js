@@ -3,7 +3,8 @@ var Fluxxor = require('fluxxor'),
     UsersStore = require('../stores/users-store'),
     UserSessionStore = require('../stores/user-session-store'),
     RouteStore = require('../stores/route-store'),
-    TwitterStore = require('../stores/twitter-store');
+    TwitterUserSearchStore = require('../stores/twitter-user-search-store'),
+    TwitterFollowingStore = require('../stores/twitter-following-store');
 
 module.exports = function (opts) {
 
@@ -13,7 +14,8 @@ module.exports = function (opts) {
         userSessionStore: new UserSessionStore(opts),
         routeStore: new RouteStore(opts),
         usersStore: new UsersStore(opts),
-        twitterStore: new TwitterStore(opts)
+        twitterUserSearchStore: new TwitterUserSearchStore(),
+        twitterFollowingStore: new TwitterFollowingStore(opts),
     }, require('../actions/actions'));
 
     return flux

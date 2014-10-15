@@ -16,7 +16,7 @@ var AdminScreen = React.createClass({
 	getInitialState: function() {
 		var flux = this.getFlux();
 		return {
-			following: flux.stores.twitterStore.getFollowing(),
+			following: flux.stores.twitterFollowingStore.getFollowing(),
 			selectedTwitterUser: false,
 			twitterUserQuery: {
 				fragment: '',
@@ -27,13 +27,15 @@ var AdminScreen = React.createClass({
 
 	componentWillMount: function() {
 		var flux = this.getFlux(),
-			store = flux.stores.twitterStore;
+			store = flux.stores.twitterUserSearchStore,
+			twitterFollowingStore = flux.stores.twitterFollowingStore;
+		twitterFollowingStore.on('change', this._onTwitterFollowingStoreChange);
 		store.on('change', this._onTwitterStoreChange);
 	},
 
 	componentWillUnmount: function() {
 		var flux = this.getFlux(),
-			store = flux.stores.twitterStore;
+			store = flux.stores.twitterUserSearchStore;
 		store.off('change', this._onTwitterStoreChange);
 	},
 
@@ -60,7 +62,6 @@ var AdminScreen = React.createClass({
 					<div className="col-sm-4">				
 						<AutoComplete 
 							onSelected={this._onSelected}
-							onChange={this._onChange} 
 							actionKey="userSearch"							
 							textKey="screen_name"
 							value={this.state.twitterUserQuery.fragment} 
@@ -106,13 +107,20 @@ var AdminScreen = React.createClass({
 		this.setState(s)
 	},
 
+	_onTwitterFollowingStoreChange: function() {
+		var flux = this.getFlux(),
+			store = flux.stores.twitterFollowingStore;
+		var s = this.state;
+		s.following = store.getFollowing();
+		this.setState(s);
+	},
+
 	_onTwitterStoreChange: function() {
 		var flux = this.getFlux(),
-			store = flux.stores.twitterStore,
+			store = flux.stores.twitterUserSearchStore,
 			q = store.getQuery(),
 			s = this.state;
-		q.users = _(q.users).first(5);
-		s.following = store.getFollowing();			
+		q.users = _(q.users).first(5);		
 		s.twitterUserQuery = q;
 		this.setState(s);
 	}
