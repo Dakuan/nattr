@@ -1,5 +1,6 @@
 var requests = {},
-	requestKeys = require('../../constants/twitter-api-requests'),
+    requestKeys = require('../../constants/twitter-api-requests'),
+    baseUrl = '/api/twitter/',
     request = require('superagent');
 
 function abort(key) {
@@ -17,7 +18,7 @@ module.exports = function (fluxContext) {
             if (fragment === '') {
                 Actions.abortTwitterUserSearch();
             } else {
-                var req = request.get("/api/twitter/users/search?name=" + fragment)
+                var req = request.get(baseUrl + 'users/search?name=' + fragment)
                     .type('json')
                     .end(function (res) {
                         requests[requestKeys.SEARCH_USER] = null;
@@ -31,7 +32,7 @@ module.exports = function (fluxContext) {
         },
 
         followUser: function (user) {
-            var req = request.post('/api/twitter/users/following')
+            var req = request.post(baseUrl + 'users/following')
                 .type('json')
                 .send(user)
                 .end(function (res) {
@@ -40,7 +41,7 @@ module.exports = function (fluxContext) {
         },
 
         unFollowUser: function (id) {
-            var req = request.del('/api/twitter/users/following/' + id)
+            var req = request.del(baseUrl + 'users/following/' + id)
                 .type('json')
                 .end(function (res) {
                     Actions.syncFollowing();
@@ -48,11 +49,14 @@ module.exports = function (fluxContext) {
         },
 
         syncFollowing: function () {
-            var req = request.get('/api/twitter/users/following')
+            abort(requestKeys.SYNC_FOLLOWING);
+            var req = request.get(baseUrl + 'users/following')
                 .type('json')
                 .end(function (res) {
                     Actions.updateFollowing(res.body);
+                    requests[requestKeys.SYNC_FOLLOWING] = null;
                 });
+            requests[requestKeys.SYNC_FOLLOWING] = req.xhr;
         }
     };
 };
