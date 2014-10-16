@@ -5,35 +5,27 @@
 var React = require('react/addons'),
 	Fluxxor = require('fluxxor'),
 	FluxChildMixin = Fluxxor.FluxMixin(React),
+	StoreWatchMixin = Fluxxor.StoreWatchMixin,
 	_ = require('underscore'),
 	FollowingTable = require('../following-table');
 	AutoComplete = require('../autocomplete');
 
 var AdminScreen = React.createClass({
 
-	mixins: [FluxChildMixin],
+	mixins: [FluxChildMixin, StoreWatchMixin('twitterFollowingStore', 'twitterUserSearchStore')],
 
-	getInitialState: function() {
+	getStateFromFlux: function () {
 		var flux = this.getFlux();
 		return {
-			following: flux.stores.twitterStore.getFollowing(),
 			selectedTwitterUser: false,
-			twitterUserQuery: {
-				fragment: '',
-				users: []
-			} 
+			following: flux.store('twitterFollowingStore').getFollowing(),
+			twitterUserQuery: flux.store('twitterUserSearchStore').getQuery()
 		};
-	},
-
-	componentWillMount: function() {
-		var flux = this.getFlux(),
-			store = flux.stores.twitterStore;
-		store.on('change', this._onTwitterStoreChange);
 	},
 
 	componentWillUnmount: function() {
 		var flux = this.getFlux(),
-			store = flux.stores.twitterStore;
+			store = flux.stores.twitterUserSearchStore;
 		store.off('change', this._onTwitterStoreChange);
 	},
 
@@ -60,7 +52,6 @@ var AdminScreen = React.createClass({
 					<div className="col-sm-4">				
 						<AutoComplete 
 							onSelected={this._onSelected}
-							onChange={this._onChange} 
 							actionKey="userSearch"							
 							textKey="screen_name"
 							value={this.state.twitterUserQuery.fragment} 
@@ -104,19 +95,7 @@ var AdminScreen = React.createClass({
 		var s = this.state;
 		s.selectedTwitterUser = null;
 		this.setState(s)
-	},
-
-	_onTwitterStoreChange: function() {
-		var flux = this.getFlux(),
-			store = flux.stores.twitterStore,
-			q = store.getQuery(),
-			s = this.state;
-		q.users = _(q.users).first(5);
-		s.following = store.getFollowing();			
-		s.twitterUserQuery = q;
-		this.setState(s);
 	}
-
 });
 
 module.exports = AdminScreen;

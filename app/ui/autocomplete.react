@@ -38,7 +38,7 @@ var AutoComplete = React.createClass({
 				<i className={loadingClasses}></i>
 				<div className={classes}>
 					{
-						this.props.options.map(function(opt, index) {
+						_(this.props.options).first(10).map(function(opt, index) {
 							return (<a key={index} className={ index === this.state.selectedIndex ? "list-group-item active" : "list-group-item"}>{opt[this.props.textKey]}</a>)
 						}.bind(this))
 					}
