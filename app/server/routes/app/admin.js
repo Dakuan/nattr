@@ -25,8 +25,8 @@ root.get('/', function (req, res, next) {
                 following: following
             })
         });
-    }).catch (function (err) {
-        throw err;
+    }).catch(function (err) {
+        next(err);
     });
 });
 
