@@ -4,14 +4,16 @@ var express = require('express'),
     fluxFactory = require('../../../util/flux-factory'),
     componentLoader = require('../../util/component-loader'),
     component = componentLoader('app'),
+    userCookie = require('../../../cookies/user-cookie'),
     root = express.Router();
 
 root.get('/', function (req, res, next) {
 
     if (req.user) {
 
-        res.cookie('user', req.user);
-
+        // set a cookie to store the user
+        userCookie.set(res, req.user);
+        
         // Fire up flux
         var flux = fluxFactory({
             path: '/',
