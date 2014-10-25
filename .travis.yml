@@ -8,6 +8,8 @@ cache:
     - node_modules
 before_script:
 - npm install -g gulp
+- npm install -g protractor
+- npm install -g cucumber
 script:
 - npm test
 deploy:
