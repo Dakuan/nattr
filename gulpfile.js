@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     base64 = require('gulp-base64'),
     mocha = require('gulp-mocha'),
     env = require('gulp-env'),
+    protractor = require("gulp-protractor").protractor,
     jest = require('gulp-jest');
 
 var paths = {
@@ -107,6 +108,16 @@ gulp.task('integration', ['test-env'], function () {
         .once('end', function () {
             process.exit();
         });;
+});
+
+gulp.task('features', ['test-env'], function () {
+    return gulp.src(["./features/**/*.feature"])
+        .pipe(protractor({
+            configFile: "features/support/conf.js",            
+        }))
+        .on('error', function (e) {
+            throw e;
+        });
 });
 
 // compile the react files so the server can render them
