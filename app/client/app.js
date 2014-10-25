@@ -7,19 +7,20 @@ var React = require('react'),
     Fluxxor = require('fluxxor'),
     Cookies = require('cookies-js'),
     fluxFactory = require('../util/flux-factory'),
+    userCookie = require('../cookies/user-cookie'),
     cookieParser = require('cookie-parser'),
     _ = require('underscore'),
     Nattr = require('../ui/app');
 
 window.React = require('react');
 
-var userString = Cookies.get('user'),
+var userString = Cookies.get(userCookie.name),
     user = cookieParser.JSONCookie(userString);
 
 var flux = fluxFactory({
     path: document.location.pathname,
     user: user,
-    users: [user],
+    users: user ? [user] : [],
     following: window._nrBlob.following
 });
 
